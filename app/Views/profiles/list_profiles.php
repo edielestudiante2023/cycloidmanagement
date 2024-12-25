@@ -43,7 +43,7 @@
             </tbody>
         </table>
 
-        <button onclick="window.location.href='http://localhost/cycloidmanagement/public/dashboard/admin'" class="btn btn-primary">Ir al Dashboard Admin</button>
+        
 
 
     </div>

@@ -46,7 +46,7 @@
                         <?php endif; ?>
 
                         <!-- Formulario -->
-                        <form action="/cycloidmanagement/public/login" method="post">
+                        <form action="login" method="post">
                             <!-- Protección CSRF -->
                             <?= csrf_field() ?>
 
