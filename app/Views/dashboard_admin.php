@@ -54,18 +54,18 @@
                     <td>Perfiles</td>
                     <td>Lista de perfiles</td>
                     <td>
-                        <button onclick="window.location.href='http://localhost/cycloidmanagement/public/profiles/list'" class="btn btn-secondary">
-                            Ir a la Lista de Perfiles
-                        </button>
+                    <a href="<?php echo base_url('/profiles/list'); ?>" target="_blank" class="btn btn-primary">
+                            Ver Dashboards
+                        </a>
                     </td>
                 </tr>
                 <tr>
                     <td>Usuarios</td>
                     <td>Lista de usuarios</td>
                     <td>
-                        <button onclick="window.location.href='http://localhost/cycloidmanagement/public/users/list'" class="btn btn-secondary">
-                            Ir a la Lista de Usuarios
-                        </button>
+                    <a href="<?php echo base_url('/users/list'); ?>" target="_blank" class="btn btn-primary">
+                            Ver Dashboards
+                        </a>
                     </td>
                 </tr>
             </tbody>
