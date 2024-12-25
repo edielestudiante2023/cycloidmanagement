@@ -100,8 +100,21 @@ class ComposerStaticInit657ac079313fab046eb8c29fe1d6992b
     );
 
     public static $classMap = array (
+        'App\\Controllers\\AuthController' => __DIR__ . '/../..' . '/app/Controllers/AuthController.php',
         'App\\Controllers\\BaseController' => __DIR__ . '/../..' . '/app/Controllers/BaseController.php',
+        'App\\Controllers\\DashboardController' => __DIR__ . '/../..' . '/app/Controllers/DashboardController.php',
         'App\\Controllers\\Home' => __DIR__ . '/../..' . '/app/Controllers/Home.php',
+        'App\\Controllers\\InfoSociosController' => __DIR__ . '/../..' . '/app/Controllers/InfoSociosController.php',
+        'App\\Controllers\\LoginController' => __DIR__ . '/../..' . '/app/Controllers/LoginController.php',
+        'App\\Controllers\\PlanillasController' => __DIR__ . '/../..' . '/app/Controllers/PlanillasController.php',
+        'App\\Controllers\\ProfilesController' => __DIR__ . '/../..' . '/app/Controllers/ProfilesController.php',
+        'App\\Controllers\\UsersController' => __DIR__ . '/../..' . '/app/Controllers/UsersController.php',
+        'App\\Controllers\\VideosCapacitaciones' => __DIR__ . '/../..' . '/app/Controllers/VideosCapacitaciones.php',
+        'App\\Models\\InfoSociosModel' => __DIR__ . '/../..' . '/app/Models/InfoSociosModel.php',
+        'App\\Models\\PlanillasModel' => __DIR__ . '/../..' . '/app/Models/PlanillasModel.php',
+        'App\\Models\\ProfileModel' => __DIR__ . '/../..' . '/app/Models/ProfileModel.php',
+        'App\\Models\\UserModel' => __DIR__ . '/../..' . '/app/Models/UserModel.php',
+        'App\\Models\\VideosCapacitacionesModel' => __DIR__ . '/../..' . '/app/Models/VideosCapacitacionesModel.php',
         'CodeIgniter\\API\\ResponseTrait' => __DIR__ . '/..' . '/codeigniter4/framework/system/API/ResponseTrait.php',
         'CodeIgniter\\Autoloader\\Autoloader' => __DIR__ . '/..' . '/codeigniter4/framework/system/Autoloader/Autoloader.php',
         'CodeIgniter\\Autoloader\\FileLocator' => __DIR__ . '/..' . '/codeigniter4/framework/system/Autoloader/FileLocator.php',

@@ -6,8 +6,21 @@ $vendorDir = dirname(__DIR__);
 $baseDir = dirname($vendorDir);
 
 return array(
+    'App\\Controllers\\AuthController' => $baseDir . '/app/Controllers/AuthController.php',
     'App\\Controllers\\BaseController' => $baseDir . '/app/Controllers/BaseController.php',
+    'App\\Controllers\\DashboardController' => $baseDir . '/app/Controllers/DashboardController.php',
     'App\\Controllers\\Home' => $baseDir . '/app/Controllers/Home.php',
+    'App\\Controllers\\InfoSociosController' => $baseDir . '/app/Controllers/InfoSociosController.php',
+    'App\\Controllers\\LoginController' => $baseDir . '/app/Controllers/LoginController.php',
+    'App\\Controllers\\PlanillasController' => $baseDir . '/app/Controllers/PlanillasController.php',
+    'App\\Controllers\\ProfilesController' => $baseDir . '/app/Controllers/ProfilesController.php',
+    'App\\Controllers\\UsersController' => $baseDir . '/app/Controllers/UsersController.php',
+    'App\\Controllers\\VideosCapacitaciones' => $baseDir . '/app/Controllers/VideosCapacitaciones.php',
+    'App\\Models\\InfoSociosModel' => $baseDir . '/app/Models/InfoSociosModel.php',
+    'App\\Models\\PlanillasModel' => $baseDir . '/app/Models/PlanillasModel.php',
+    'App\\Models\\ProfileModel' => $baseDir . '/app/Models/ProfileModel.php',
+    'App\\Models\\UserModel' => $baseDir . '/app/Models/UserModel.php',
+    'App\\Models\\VideosCapacitacionesModel' => $baseDir . '/app/Models/VideosCapacitacionesModel.php',
     'CodeIgniter\\API\\ResponseTrait' => $vendorDir . '/codeigniter4/framework/system/API/ResponseTrait.php',
     'CodeIgniter\\Autoloader\\Autoloader' => $vendorDir . '/codeigniter4/framework/system/Autoloader/Autoloader.php',
     'CodeIgniter\\Autoloader\\FileLocator' => $vendorDir . '/codeigniter4/framework/system/Autoloader/FileLocator.php',
