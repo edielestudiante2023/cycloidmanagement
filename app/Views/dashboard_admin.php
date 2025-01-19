@@ -68,6 +68,33 @@
                         </a>
                     </td>
                 </tr>
+                <tr>
+                    <td>Tipos de Elementos a Hacer Seguimiento</td>
+                    <td>Lista de items</td>
+                    <td>
+                    <a href="<?php echo base_url('/pendientes'); ?>" target="_blank" class="btn btn-primary">
+                            Ver Dashboards
+                        </a>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Seguimiento a Compromisos</td>
+                    <td>Avances Estratégicos, tácticos y operativos</td>
+                    <td>
+                    <a href="<?php echo base_url('/actividades/list'); ?>" target="_blank" class="btn btn-primary">
+                            Ver Dashboards
+                        </a>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Videos del Back </td>
+                    <td>Procesos del Back</td>
+                    <td>
+                    <a href="<?php echo base_url('/videos-capacitaciones-back'); ?>" target="_blank" class="btn btn-primary">
+                            Ver Dashboards
+                        </a>
+                    </td>
+                </tr>
             </tbody>
         </table>
 
