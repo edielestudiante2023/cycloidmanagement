@@ -56,6 +56,29 @@ $routes->post('videos-capacitaciones/edit/(:num)', 'VideosCapacitaciones::editPo
 $routes->get('videos-capacitaciones/delete/(:num)', 'VideosCapacitaciones::delete/$1'); // Eliminar video
 
 
+$routes->get('/pendientes', 'TipoController::listTipoactividad');
+$routes->get('/pendientes/add', 'TipoController::addTipoactividad');
+$routes->post('/pendientes/addPost', 'TipoController::addPostTipoactividad');
+$routes->get('/pendientes/edit/(:num)', 'TipoController::editTipoactividad/$1');
+$routes->post('/pendientes/editPost/(:num)', 'TipoController::editPostTipoactividad/$1');
+$routes->get('/pendientes/delete/(:num)', 'TipoController::deleteTipoactividad/$1');
+
+// Rutas para Seguimiento de Actividades
+$routes->get('/actividades/list', 'SeguimientoactividadesController::listseguimientoactividades');
+$routes->get('/actividades/add', 'SeguimientoactividadesController::addseguimientoactividades');
+$routes->post('/actividades/addpost', 'SeguimientoactividadesController::addpostseguimientoactividades');
+$routes->get('/actividades/edit/(:num)', 'SeguimientoactividadesController::editseguimientoactividades/$1');
+$routes->post('/actividades/editpost/(:num)', 'SeguimientoactividadesController::editpostseguimientoactividades/$1');
+$routes->get('/actividades/delete/(:num)', 'SeguimientoactividadesController::deleteseguimientoactividades/$1');
+
+$routes->get('videos-capacitaciones-back', 'VideosBackController::list'); // Listar videos
+$routes->get('videos-capacitaciones-back/add', 'VideosBackController::add'); // Mostrar formulario de agregar
+$routes->post('videos-capacitaciones-back/add', 'VideosBackController::addPost'); // Procesar formulario de agregar
+$routes->get('videos-capacitaciones-back/edit/(:num)', 'VideosBackController::edit/$1'); // Mostrar formulario de editar
+$routes->post('videos-capacitaciones-back/edit/(:num)', 'VideosBackController::editPost/$1'); // Procesar formulario de editar
+$routes->get('videos-capacitaciones-back/delete/(:num)', 'VideosBackController::delete/$1'); // Eliminar video
+
+
 
 
 
