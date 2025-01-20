@@ -95,6 +95,15 @@
                         </a>
                     </td>
                 </tr>
+                <tr>
+                    <td>Videos del Front </td>
+                    <td>Procesos del Front</td>
+                    <td>
+                    <a href="<?php echo base_url('/videos-capacitaciones-front'); ?>" target="_blank" class="btn btn-primary">
+                            Ver Dashboards
+                        </a>
+                    </td>
+                </tr>
             </tbody>
         </table>
 

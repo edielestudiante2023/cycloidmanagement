@@ -78,6 +78,12 @@ $routes->get('videos-capacitaciones-back/edit/(:num)', 'VideosBackController::ed
 $routes->post('videos-capacitaciones-back/edit/(:num)', 'VideosBackController::editPost/$1'); // Procesar formulario de editar
 $routes->get('videos-capacitaciones-back/delete/(:num)', 'VideosBackController::delete/$1'); // Eliminar video
 
+$routes->get('videos-capacitaciones-front', 'VideosFrontController::list'); // Listar videos
+$routes->get('videos-capacitaciones-front/add', 'VideosFrontController::add'); // Mostrar formulario de agregar
+$routes->post('videos-capacitaciones-front/add', 'VideosFrontController::addPost'); // Procesar formulario de agregar
+$routes->get('videos-capacitaciones-front/edit/(:num)', 'VideosFrontController::edit/$1'); // Mostrar formulario de editar
+$routes->post('videos-capacitaciones-front/edit/(:num)', 'VideosFrontController::editPost/$1'); // Procesar formulario de editar
+$routes->get('videos-capacitaciones-front/delete/(:num)', 'VideosFrontController::delete/$1'); // Eliminar video
 
 
 
