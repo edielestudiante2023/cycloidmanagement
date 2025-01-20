@@ -87,4 +87,11 @@ $routes->get('videos-capacitaciones-front/delete/(:num)', 'VideosFrontController
 
 
 
+$routes->get('/doclegal/list-doclegales', 'DoclegalController::list_doclegales');
+$routes->get('/doclegal/add-doclegal', 'DoclegalController::add_doclegal');
+$routes->post('/doclegal/add-doclegal-post', 'DoclegalController::add_doclegal_post');
+$routes->get('/doclegal/edit-doclegal/(:num)', 'DoclegalController::edit_doclegal/$1');
+$routes->post('/doclegal/edit-doclegal-post/(:num)', 'DoclegalController::edit_doclegal_post/$1');
+$routes->get('/doclegal/delete-doclegal/(:num)', 'DoclegalController::delete_doclegal/$1');
+
 
