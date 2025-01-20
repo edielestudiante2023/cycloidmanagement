@@ -69,7 +69,7 @@ class DoclegalController extends BaseController
 
             // Elimina el archivo anterior si existe
             if ($doclegal['documento'] && file_exists(FCPATH . 'uploads/doclegal/' . $doclegal['documento'])) {
-                unlink(FCPATH . 'uploads/doclegal/' . $doclegal['documento']);
+                unlink(FCPATH . 'doclegal/' . $doclegal['documento']);
             }
 
             $doclegal['documento'] = $newName;
