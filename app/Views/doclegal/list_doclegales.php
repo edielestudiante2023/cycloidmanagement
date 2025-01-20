@@ -18,7 +18,6 @@
                     <th>Tipo de Documento</th>
                     <th>Documento</th>
                     <th>Observaciones</th>
-                    <th>Fecha de Creación</th>
                     <th>Acciones</th>
                 </tr>
             </thead>
@@ -31,7 +30,6 @@
                             <a href="<?= base_url('uploads/doclegal/' . $doclegal['documento']) ?>" target="_blank">Ver Documento</a>
                         </td>
                         <td><?= $doclegal['observaciones'] ?></td>
-                        <td><?= $doclegal['created_at'] ?></td>
                         <td>
                             <a href="<?= base_url('/doclegal/edit-doclegal/' . $doclegal['id']) ?>" class="btn btn-warning btn-sm">Editar</a>
                             <a href="<?= base_url('/doclegal/delete-doclegal/' . $doclegal['id']) ?>" class="btn btn-danger btn-sm" onclick="return confirm('¿Estás seguro de eliminar este documento legal?');">Eliminar</a>

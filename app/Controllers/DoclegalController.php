@@ -3,7 +3,6 @@
 namespace App\Controllers;
 
 use App\Models\DoclegalModel;
-use CodeIgniter\HTTP\Files\UploadedFile;
 
 class DoclegalController extends BaseController
 {
@@ -14,26 +13,27 @@ class DoclegalController extends BaseController
         $this->doclegalModel = new DoclegalModel();
     }
 
+    // Listar documentos legales
     public function list_doclegales()
     {
         $data['doclegales'] = $this->doclegalModel->findAll();
         return view('doclegal/list_doclegales', $data);
     }
 
+    // Mostrar formulario para agregar documento legal
     public function add_doclegal()
     {
         return view('doclegal/add_doclegal');
     }
 
+    // Procesar formulario para agregar documento legal
     public function add_doclegal_post()
     {
         $file = $this->request->getFile('documento');
 
-        if ($file && $file->isValid() && !$file->hasMoved()) {
+        if ($file->isValid() && !$file->hasMoved()) {
             $newName = $file->getRandomName();
-
-            // Cambiar la ruta a una carpeta personalizada (ejemplo: 'doclegal')
-            $file->move(ROOTPATH . 'doclegal', $newName);
+            $file->move(FCPATH . 'uploads/doclegal', $newName);
 
             $data = [
                 'tipo_documento' => $this->request->getPost('tipo_documento'),
@@ -49,26 +49,26 @@ class DoclegalController extends BaseController
         return redirect()->back()->with('error', 'Error al subir el documento.');
     }
 
+    // Mostrar formulario para editar documento legal
     public function edit_doclegal($id)
     {
         $data['doclegal'] = $this->doclegalModel->find($id);
         return view('doclegal/edit_doclegal', $data);
     }
 
+    // Procesar formulario para editar documento legal
     public function edit_doclegal_post($id)
     {
         $file = $this->request->getFile('documento');
         $doclegal = $this->doclegalModel->find($id);
 
-        if ($file && $file->isValid() && !$file->hasMoved()) {
+        if ($file->isValid() && !$file->hasMoved()) {
             $newName = $file->getRandomName();
+            $file->move(FCPATH . 'uploads/doclegal', $newName);
 
-            // Cambiar la ruta a una carpeta personalizada
-            $file->move(ROOTPATH . 'doclegal', $newName);
-
-            // Elimina el archivo anterior si existe
-            if ($doclegal['documento'] && file_exists(ROOTPATH . 'doclegal/' . $doclegal['documento'])) {
-                unlink(ROOTPATH . 'doclegal/' . $doclegal['documento']);
+            // Eliminar el archivo anterior si existe
+            if ($doclegal['documento'] && file_exists(FCPATH . 'uploads/doclegal/' . $doclegal['documento'])) {
+                unlink(FCPATH . 'uploads/doclegal/' . $doclegal['documento']);
             }
 
             $doclegal['documento'] = $newName;
@@ -82,14 +82,15 @@ class DoclegalController extends BaseController
         return redirect()->to('/doclegal/list-doclegales')->with('success', 'Documento legal actualizado exitosamente.');
     }
 
+    // Eliminar documento legal
     public function delete_doclegal($id)
     {
         $doclegal = $this->doclegalModel->find($id);
 
         if ($doclegal) {
-            // Elimina el archivo asociado si existe
-            if ($doclegal['documento'] && file_exists(ROOTPATH . 'doclegal/' . $doclegal['documento'])) {
-                unlink(ROOTPATH . 'doclegal/' . $doclegal['documento']);
+            // Eliminar el archivo asociado si existe
+            if ($doclegal['documento'] && file_exists(FCPATH . 'uploads/doclegal/' . $doclegal['documento'])) {
+                unlink(FCPATH . 'uploads/doclegal/' . $doclegal['documento']);
             }
 
             $this->doclegalModel->delete($id);
