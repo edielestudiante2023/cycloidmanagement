@@ -7,7 +7,7 @@
 <body>
 <div class="container mt-5">
     <h1>Lista de Videos de Capacitación Back Office</h1>
-    <a href="<?= base_url('videos-capacitaciones-front/add') ?>" class="btn btn-primary mb-3">Agregar Video</a>
+    <a href="<?= base_url('videos-capacitaciones-back/add') ?>" class="btn btn-primary mb-3">Agregar Video</a>
     <table id="videosTable" class="table table-striped">
         <thead>
             <tr>
@@ -26,8 +26,8 @@
                     <td><?= $video['detalles'] ?></td>
                     <td><a href="<?= $video['enlace'] ?>" target="_blank">Ver Enlace</a></td>
                     <td>
-                        <a href="<?= base_url('videos-capacitaciones-front/edit/' . $video['id']) ?>" class="btn btn-warning btn-sm">Editar</a>
-                        <a href="<?= base_url('videos-capacitaciones-front/delete/' . $video['id']) ?>" class="btn btn-danger btn-sm">Eliminar</a>
+                        <a href="<?= base_url('videos-capacitaciones-back/edit/' . $video['id']) ?>" class="btn btn-warning btn-sm">Editar</a>
+                        <a href="<?= base_url('videos-capacitaciones-back/delete/' . $video['id']) ?>" class="btn btn-danger btn-sm">Eliminar</a>
                     </td>
                 </tr>
             <?php endforeach; ?>
