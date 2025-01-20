@@ -14,22 +14,24 @@
         <table id="doclegalTable" class="table table-striped table-bordered">
             <thead>
                 <tr>
-                    <th>ID</th>
+                    <th class="d-none">ID</th> <!-- Oculto visualmente -->
                     <th>Tipo de Documento</th>
                     <th>Documento</th>
                     <th>Observaciones</th>
+                    <th>Fecha de Creación</th> <!-- Nueva columna -->
                     <th>Acciones</th>
                 </tr>
             </thead>
             <tbody>
                 <?php foreach ($doclegales as $doclegal): ?>
                     <tr>
-                        <td><?= $doclegal['id'] ?></td>
+                        <td class="d-none"><?= $doclegal['id'] ?></td> <!-- Oculto visualmente -->
                         <td><?= $doclegal['tipo_documento'] ?></td>
                         <td>
                             <a href="<?= base_url('uploads/doclegal/' . $doclegal['documento']) ?>" target="_blank">Ver Documento</a>
                         </td>
                         <td><?= $doclegal['observaciones'] ?></td>
+                        <td><?= $doclegal['created_at'] ?></td> <!-- Fecha de creación -->
                         <td>
                             <a href="<?= base_url('/doclegal/edit-doclegal/' . $doclegal['id']) ?>" class="btn btn-warning btn-sm">Editar</a>
                             <a href="<?= base_url('/doclegal/delete-doclegal/' . $doclegal['id']) ?>" class="btn btn-danger btn-sm" onclick="return confirm('¿Estás seguro de eliminar este documento legal?');">Eliminar</a>
@@ -46,7 +48,11 @@
     <script src="https://cdn.datatables.net/1.13.6/js/dataTables.bootstrap5.min.js"></script>
     <script>
         $(document).ready(function () {
-            $('#doclegalTable').DataTable();
+            $('#doclegalTable').DataTable({
+                columnDefs: [
+                    { targets: 0, visible: false } // Ocultar la columna ID en DataTables
+                ]
+            });
         });
     </script>
 </body>
