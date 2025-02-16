@@ -8,8 +8,15 @@ class VideosFrontController extends BaseController
 {
     public function list()
     {
+        $session = session();
         $videosModel = new VideosFrontModel();
         $data['videos'] = $videosModel->findAll();
+        
+        // If user is consultant, show consultant view
+        if ($session->get('profile') === 'consultor') {
+            return view('videos_front/list_videos_capacitaciones_consultor', $data);
+        }
+        
         return view('videos_front/list_videos_capacitaciones', $data);
     }
 

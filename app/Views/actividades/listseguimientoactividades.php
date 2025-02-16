@@ -13,14 +13,43 @@
   <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.10.5/font/bootstrap-icons.min.css" rel="stylesheet" />
 
   <style>
+    /* Modern color scheme */
+    body {
+      background-color: #f8f9fa;
+      color: #343a40;
+    }
+
+    h1 {
+      color: #007bff;
+    }
+
     /* Ajustes de diseño: misma altura de filas y ajuste de columnas */
     table.dataTable tbody tr {
       height: 50px;
+      transition: background-color 0.3s;
+    }
+
+    table.dataTable tbody tr:hover {
+      background-color: #e9ecef;
     }
 
     table.dataTable th,
     table.dataTable td {
       white-space: nowrap;
+    }
+
+    /* Estilo para botones modernos */
+    .btn-moderno {
+      font-weight: 500;
+      letter-spacing: 0.25px;
+      border-radius: 50px;
+      transition: background-color 0.2s, transform 0.2s, box-shadow 0.2s;
+    }
+
+    .btn-moderno:hover {
+      background-color: #0056b3;
+      transform: translateY(-2px);
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.15);
     }
   </style>
 </head>
@@ -74,7 +103,6 @@
       <tbody>
         <?php foreach ($actividades as $actividad): ?>
           <tr>
-            <!-- Columna "Acciones" movida a la primera posición -->
             <td>
               <a href="<?= base_url('actividades/edit/' . esc($actividad['id_actividad'])) ?>" class="btn btn-warning btn-sm" data-bs-toggle="tooltip" title="Editar">
                 Editar

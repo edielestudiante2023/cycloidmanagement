@@ -8,10 +8,72 @@ use CodeIgniter\Controller;
 
 class SeguimientoactividadesController extends Controller
 {
+    public function updateField()
+    {
+        $session = session();
+        
+        // Verificar si la solicitud es AJAX
+        if (!$this->request->isAJAX()) {
+            return $this->response->setJSON(['status' => 'error', 'msg' => 'Invalid request']);
+        }
+
+        // Obtener los datos enviados
+        $pk = $this->request->getPost('pk');  // id_actividad
+        $name = $this->request->getPost('name');  // nombre del campo
+        $value = $this->request->getPost('value');  // nuevo valor
+
+        // Validar los campos
+        $validation = \Config\Services::validation();
+        
+        $rules = [
+            'estado' => 'in_list[abierto,gestionando,cerrado]',
+            'fecha_apertura' => 'valid_date',
+            'fecha_vencimiento' => 'valid_date',
+            'avance' => 'integer|greater_than_equal_to[0]|less_than_equal_to[100]'
+        ];
+
+        // Solo validar si existe una regla para el campo
+        if (isset($rules[$name])) {
+            if (!$validation->check($value, $rules[$name])) {
+                return $this->response->setJSON([
+                    'status' => 'error',
+                    'msg' => $validation->getError($name)
+                ]);
+            }
+        }
+
+        try {
+            $actividadModel = new ActividadModel();
+            $actividad = $actividadModel->find($pk);
+
+            if (!$actividad) {
+                return $this->response->setJSON([
+                    'status' => 'error',
+                    'msg' => 'Actividad no encontrada'
+                ]);
+            }
+
+            // Actualizar el campo
+            $actividad[$name] = $value;
+            $actividadModel->save($actividad);
+
+            return $this->response->setJSON([
+                'status' => 'success',
+                'msg' => 'Campo actualizado correctamente'
+            ]);
+        } catch (\Exception $e) {
+            return $this->response->setJSON([
+                'status' => 'error',
+                'msg' => 'Error al actualizar el campo: ' . $e->getMessage()
+            ]);
+        }
+    }
+
     public function listseguimientoactividades()
     {
         $actividadModel = new ActividadModel();
         $tipoModel = new TipoModel();
+        $session = session();
 
         $actividades = $actividadModel->findAll();
         $tipos = $tipoModel->findAll();
@@ -28,12 +90,23 @@ class SeguimientoactividadesController extends Controller
         }
 
         $data['actividades'] = $actividades;
-        return view('actividades/listseguimientoactividades', $data);
+
+        // Verificar el rol del usuario y cargar la vista correspondiente
+        if ($session->get('profile_id') == 2) { // Asumiendo que 2 es el ID del perfil consultor
+            return view('actividades/listseguimientoactividades_consultor', $data);
+        } else {
+            return view('actividades/listseguimientoactividades', $data);
+        }
     }
 
 
     public function addseguimientoactividades()
     {
+        $session = session();
+        if ($session->get('profile_id') == 2) { // Si es consultor
+            return redirect()->to(base_url('actividades/list'))->with('error', 'No tiene permisos para esta acción');
+        }
+
         $tipoModel = new TipoModel();
         $data['tipos'] = $tipoModel->findAll();
 
@@ -42,6 +115,11 @@ class SeguimientoactividadesController extends Controller
 
     public function addpostseguimientoactividades()
     {
+        $session = session();
+        if ($session->get('profile_id') == 2) { // Si es consultor
+            return redirect()->to(base_url('actividades/list'))->with('error', 'No tiene permisos para esta acción');
+        }
+
         $actividadModel = new ActividadModel();
         $file = $this->request->getFile('documentos_adjuntos');
 
@@ -71,6 +149,11 @@ class SeguimientoactividadesController extends Controller
 
     public function editseguimientoactividades($id)
     {
+        $session = session();
+        if ($session->get('profile_id') == 2) { // Si es consultor
+            return redirect()->to(base_url('actividades/list'))->with('error', 'No tiene permisos para esta acción');
+        }
+
         $actividadModel = new ActividadModel();
         $tipoModel = new TipoModel();
 
@@ -82,6 +165,11 @@ class SeguimientoactividadesController extends Controller
 
     public function editpostseguimientoactividades($id)
     {
+        $session = session();
+        if ($session->get('profile_id') == 2) { // Si es consultor
+            return redirect()->to(base_url('actividades/list'))->with('error', 'No tiene permisos para esta acción');
+        }
+
         $actividadModel = new ActividadModel();
         $actividad = $actividadModel->find($id);
         $file = $this->request->getFile('documentos_adjuntos');
@@ -114,6 +202,11 @@ class SeguimientoactividadesController extends Controller
 
     public function deleteseguimientoactividades($id)
     {
+        $session = session();
+        if ($session->get('profile_id') == 2) { // Si es consultor
+            return redirect()->to(base_url('actividades/list'))->with('error', 'No tiene permisos para esta acción');
+        }
+
         $actividadModel = new ActividadModel();
         $actividad = $actividadModel->find($id);
 

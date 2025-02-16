@@ -49,6 +49,7 @@ $routes->get('/planillas/delete-planilla/(:num)', 'PlanillasController::delete_p
 
 
 $routes->get('videos-capacitaciones', 'VideosCapacitaciones::list'); // Listar videos
+$routes->get('videos-capacitaciones-consultor', 'VideosCapacitaciones::listConsultor'); // Listar videos consultor
 $routes->get('videos-capacitaciones/add', 'VideosCapacitaciones::add'); // Mostrar formulario de agregar
 $routes->post('videos-capacitaciones/add', 'VideosCapacitaciones::addPost'); // Procesar formulario de agregar
 $routes->get('videos-capacitaciones/edit/(:num)', 'VideosCapacitaciones::edit/$1'); // Mostrar formulario de editar
@@ -64,6 +65,7 @@ $routes->post('/pendientes/editPost/(:num)', 'TipoController::editPostTipoactivi
 $routes->get('/pendientes/delete/(:num)', 'TipoController::deleteTipoactividad/$1');
 
 // Rutas para Seguimiento de Actividades
+$routes->post('/seguimientoactividades/updateField', 'SeguimientoactividadesController::updateField');
 $routes->get('/actividades/list', 'SeguimientoactividadesController::listseguimientoactividades');
 $routes->get('/actividades/add', 'SeguimientoactividadesController::addseguimientoactividades');
 $routes->post('/actividades/addpost', 'SeguimientoactividadesController::addpostseguimientoactividades');
@@ -71,7 +73,8 @@ $routes->get('/actividades/edit/(:num)', 'SeguimientoactividadesController::edit
 $routes->post('/actividades/editpost/(:num)', 'SeguimientoactividadesController::editpostseguimientoactividades/$1');
 $routes->get('/actividades/delete/(:num)', 'SeguimientoactividadesController::deleteseguimientoactividades/$1');
 
-$routes->get('videos-capacitaciones-back', 'VideosBackController::list'); // Listar videos
+$routes->get('videos-capacitaciones-back', 'VideosBackController::list'); // Listar videos admin
+$routes->get('videos-capacitaciones-back-consultor', 'VideosBackController::listConsultor'); // Listar videos consultor
 $routes->get('videos-capacitaciones-back/add', 'VideosBackController::add'); // Mostrar formulario de agregar
 $routes->post('videos-capacitaciones-back/add', 'VideosBackController::addPost'); // Procesar formulario de agregar
 $routes->get('videos-capacitaciones-back/edit/(:num)', 'VideosBackController::edit/$1'); // Mostrar formulario de editar

@@ -10,9 +10,15 @@
     <!-- DataTables CSS -->
     <link href="https://cdn.datatables.net/1.13.5/css/dataTables.bootstrap5.min.css" rel="stylesheet" />
     <style>
-        /* Espacio entre la navbar y el contenido */
+        /* Modern color scheme */
         body {
+            background-color: #f8f9fa;
+            color: #343a40;
             padding-top: 20px;
+        }
+
+        h1 {
+            color: #007bff;
         }
 
         /* Estilo para botones modernos */
@@ -38,7 +44,7 @@
 
 <body>
     <!-- Barra de navegación superior sin posición fija -->
-    <nav class="navbar navbar-dark  mb-4">
+    <nav class="navbar navbar-dark mb-4">
         <div class="container">
             <div class="row w-100 text-center">
                 <div class="col-4 d-flex justify-content-center align-items-center">
