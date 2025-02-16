@@ -13,6 +13,13 @@ class VideosBackController extends BaseController
         return view('videos_back/list_videos_capacitaciones', $data);
     }
 
+    public function listConsultor()
+    {
+        $videosModel = new VideosBackModel();
+        $data['videos'] = $videosModel->findAll();
+        return view('videos_back/list_videos_capacitaciones_consultor', $data);
+    }
+
     public function add()
     {
         return view('videos_back/add_videos_capacitaciones');

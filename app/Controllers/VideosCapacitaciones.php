@@ -6,6 +6,13 @@ use App\Models\VideosCapacitacionesModel;
 
 class VideosCapacitaciones extends BaseController
 {
+    public function listConsultor()
+    {
+        $videosModel = new VideosCapacitacionesModel();
+        $data['videos'] = $videosModel->findAll();
+        return view('videos_socios/list_videos_capacitaciones_consultor', $data);
+    }
+
     public function list()
     {
         $videosModel = new VideosCapacitacionesModel();

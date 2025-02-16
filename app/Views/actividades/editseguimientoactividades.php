@@ -1,11 +1,38 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Editar Actividad</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        /* Modern color scheme */
+        body {
+            background-color: #f8f9fa;
+            color: #343a40;
+        }
+
+        h1 {
+            color: #007bff;
+        }
+
+        /* Estilo para botones modernos */
+        .btn-moderno {
+            font-weight: 500;
+            letter-spacing: 0.25px;
+            border-radius: 50px;
+            transition: background-color 0.2s, transform 0.2s, box-shadow 0.2s;
+        }
+
+        .btn-moderno:hover {
+            background-color: #0056b3;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.15);
+        }
+    </style>
 </head>
+
 <body>
 <div class="container mt-5">
     <h1 class="mb-4">Editar Actividad</h1>
@@ -65,8 +92,8 @@
             <label for="enlaces_adjuntos" class="form-label">Enlace Adjunto</label>
             <input type="url" id="enlaces_adjuntos" name="enlaces_adjuntos" class="form-control" value="<?= esc($actividad['enlaces_adjuntos']) ?>">
         </div>
-        <button type="submit" class="btn btn-success">Actualizar</button>
-        <a href="<?= base_url('actividades/list') ?>" class="btn btn-secondary">Cancelar</a>
+        <button type="submit" class="btn btn-success btn-moderno">Actualizar</button>
+        <a href="<?= base_url('actividades/list') ?>" class="btn btn-secondary btn-moderno">Cancelar</a>
     </form>
 </div>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>

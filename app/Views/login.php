@@ -7,6 +7,30 @@
     <title>Iniciar Sesión</title>
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        /* Modern color scheme */
+        body {
+            background-color: #f8f9fa;
+        }
+
+        h3 {
+            color: #007bff;
+        }
+
+        /* Estilo para botones modernos */
+        .btn-moderno {
+            font-weight: 500;
+            letter-spacing: 0.25px;
+            border-radius: 50px;
+            transition: background-color 0.2s, transform 0.2s, box-shadow 0.2s;
+        }
+
+        .btn-moderno:hover {
+            background-color: #0056b3;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.15);
+        }
+    </style>
 </head>
 
 <body class="bg-light">
@@ -74,7 +98,7 @@
 
                             <!-- Botón de enviar -->
                             <div class="d-grid">
-                                <button type="submit" class="btn btn-primary btn-lg">Iniciar Sesión</button>
+                                <button type="submit" class="btn btn-primary btn-moderno btn-lg">Iniciar Sesión</button>
                             </div>
                         </form>
 
@@ -85,20 +109,19 @@
     </div>
 
     <footer class="light text-white py-4">
-    <div class="container text-center">
-        <div class="row justify-content-center align-items-center">
-            <div class="col-4 text-center">
-                <!-- Espacio para Logo 1 -->
-                <img src="<?= base_url('/imagenes/2.png') ?>" alt="Logo 1" class="img-fluid" style="max-height: 250px;">
-            </div>
-            <div class="col-4 text-center">
-                <!-- Espacio para Logo 2 -->
-                <img src="<?= base_url('/imagenes/3.png') ?>" alt="Logo 2" class="img-fluid" style="max-height: 250px;">
+        <div class="container text-center">
+            <div class="row justify-content-center align-items-center">
+                <div class="col-4 text-center">
+                    <!-- Espacio para Logo 1 -->
+                    <img src="<?= base_url('/imagenes/2.png') ?>" alt="Logo 1" class="img-fluid" style="max-height: 250px;">
+                </div>
+                <div class="col-4 text-center">
+                    <!-- Espacio para Logo 2 -->
+                    <img src="<?= base_url('/imagenes/3.png') ?>" alt="Logo 2" class="img-fluid" style="max-height: 250px;">
+                </div>
             </div>
         </div>
-    </div>
-</footer>
-
+    </footer>
 
     <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>

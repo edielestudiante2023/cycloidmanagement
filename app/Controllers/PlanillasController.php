@@ -15,12 +15,20 @@ class PlanillasController extends BaseController
 
     public function list_planillas()
     {
+        $session = session();
         $data['planillas'] = $this->planillasModel->findAll();
-        return view('planillas/list_planillas', $data);
+        
+        if ($session->get('profile_id') == 2) { // Si es consultor
+            return view('planillas/list_planillas_consultor', $data);
+        } else {
+            return view('planillas/list_planillas', $data);
+        }
     }
 
     public function add_planilla()
     {
+        $session = session();
+        // Removed restriction for consultants
         return view('planillas/add_planillas');
     }
 
@@ -79,6 +87,11 @@ class PlanillasController extends BaseController
 
     public function delete_planilla($id)
     {
+        $session = session();
+        if ($session->get('profile_id') == 2) { // Si es consultor
+            return redirect()->to(base_url('planillas/list-planillas'))->with('error', 'No tiene permisos para esta acción');
+        }
+
         $planilla = $this->planillasModel->find($id);
         if ($planilla && $planilla['documento']) {
             unlink(FCPATH . 'planillas/' . $planilla['documento']);

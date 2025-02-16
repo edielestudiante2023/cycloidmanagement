@@ -22,7 +22,7 @@
                     <td><?= $video['id'] ?></td>
                     <td><?= $video['elemento'] ?></td>
                     <td><?= $video['detalles'] ?></td>
-                    <td><a href="<?= $video['enlace'] ?>" target="_blank">Ver Enlace</a></td>
+                    <td><a href="<?= $video['enlace'] ?>" target="_blank" class="btn btn-primary btn-sm">Ver Video</a></td>
                 </tr>
             <?php endforeach; ?>
         </tbody>
@@ -33,7 +33,11 @@
 <script src="https://cdn.datatables.net/1.13.1/js/jquery.dataTables.min.js"></script>
 <script>
     $(document).ready(function () {
-        $('#videosTable').DataTable();
+        $('#videosTable').DataTable({
+            language: {
+                url: '//cdn.datatables.net/plug-ins/1.13.5/i18n/es-ES.json'
+            }
+        });
     });
 </script>
 </body>

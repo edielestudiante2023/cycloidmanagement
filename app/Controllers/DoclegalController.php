@@ -16,13 +16,21 @@ class DoclegalController extends BaseController
     // Listar documentos legales
     public function list_doclegales()
     {
+        $session = session();
         $data['doclegales'] = $this->doclegalModel->findAll();
-        return view('doclegal/list_doclegales', $data);
+        
+        if ($session->get('profile_id') == 2) { // Si es consultor
+            return view('doclegal/list_doclegales_consultor', $data);
+        } else {
+            return view('doclegal/list_doclegales', $data);
+        }
     }
 
     // Mostrar formulario para agregar documento legal
     public function add_doclegal()
     {
+        $session = session();
+        // Removed restriction for consultants
         return view('doclegal/add_doclegal');
     }
 
@@ -52,6 +60,11 @@ class DoclegalController extends BaseController
     // Mostrar formulario para editar documento legal
     public function edit_doclegal($id)
     {
+        $session = session();
+        if ($session->get('profile_id') == 2) { // Si es consultor
+            return redirect()->to(base_url('doclegal/list-doclegales'))->with('error', 'No tiene permisos para esta acción');
+        }
+
         $data['doclegal'] = $this->doclegalModel->find($id);
         return view('doclegal/edit_doclegal', $data);
     }
@@ -59,6 +72,11 @@ class DoclegalController extends BaseController
     // Procesar formulario para editar documento legal
     public function edit_doclegal_post($id)
     {
+        $session = session();
+        if ($session->get('profile_id') == 2) { // Si es consultor
+            return redirect()->to(base_url('doclegal/list-doclegales'))->with('error', 'No tiene permisos para esta acción');
+        }
+
         $file = $this->request->getFile('documento');
         $doclegal = $this->doclegalModel->find($id);
 
@@ -85,6 +103,11 @@ class DoclegalController extends BaseController
     // Eliminar documento legal
     public function delete_doclegal($id)
     {
+        $session = session();
+        if ($session->get('profile_id') == 2) { // Si es consultor
+            return redirect()->to(base_url('doclegal/list-doclegales'))->with('error', 'No tiene permisos para esta acción');
+        }
+
         $doclegal = $this->doclegalModel->find($id);
 
         if ($doclegal) {
