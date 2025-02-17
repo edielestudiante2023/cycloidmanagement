@@ -55,8 +55,11 @@
                 </div>
                 <div class="col-4 d-flex justify-content-center align-items-center">
                     <img src="<?= base_url('/imagenes/psiclodmind2.png') ?>" alt="Logo 3" class="img-fluid">
-                </div>
-            </div>
+        </div>
+        <div class="text-end mt-4">
+            <a href="<?= base_url('logout') ?>" class="btn btn-danger">Cerrar Sesión</a>
+        </div>
+    </div>
         </div>
     </nav>
 
