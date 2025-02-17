@@ -1,4 +1,3 @@
-
 <?php
 namespace App\Controllers;
 
@@ -29,46 +28,28 @@ class PlanillasController extends BaseController
     public function add_planilla()
     {
         $session = session();
+        // Removed restriction for consultants
         return view('planillas/add_planillas');
     }
 
     public function add_planilla_post()
     {
         $file = $this->request->getFile('documento');
-        
-        // Validar tipo de archivo
-        $validTypes = ['application/pdf'];
-        if (!in_array($file->getMimeType(), $validTypes)) {
-            return redirect()->back()->with('error', 'Solo se permiten archivos PDF.');
-        }
-
         if ($file->isValid() && !$file->hasMoved()) {
-            try {
-                $newName = $file->getRandomName();
-                $file->move(FCPATH . 'planillas', $newName);
+            $newName = $file->getRandomName();
+            $file->move(FCPATH . 'planillas', $newName);
 
-                $data = [
-                    'year' => $this->request->getPost('year'),
-                    'month' => $this->request->getPost('month'),
-                    'planilla' => $this->request->getPost('planilla'),
-                    'documento' => $newName,
-                    'observaciones' => $this->request->getPost('observaciones'),
-                ];
+            $data = [
+                'year' => $this->request->getPost('year'),
+                'month' => $this->request->getPost('month'),
+                'planilla' => $this->request->getPost('planilla'),
+                'documento' => $newName,
+                'observaciones' => $this->request->getPost('observaciones'),
+            ];
 
-                if (!$this->planillasModel->save($data)) {
-                    // Si falla el guardado en la base de datos, eliminar el archivo
-                    unlink(FCPATH . 'planillas/' . $newName);
-                    return redirect()->back()->with('error', 'Error al guardar los datos de la planilla.');
-                }
+            $this->planillasModel->save($data);
 
-                return redirect()->to('/planillas/list-planillas')->with('success', 'Planilla agregada exitosamente.');
-            } catch (\Exception $e) {
-                // Si ocurre cualquier error, asegurarse de limpiar archivos temporales
-                if (file_exists(FCPATH . 'planillas/' . $newName)) {
-                    unlink(FCPATH . 'planillas/' . $newName);
-                }
-                return redirect()->back()->with('error', 'Error al procesar la planilla: ' . $e->getMessage());
-            }
+            return redirect()->to('/planillas/list-planillas')->with('success', 'Planilla agregada exitosamente.');
         }
 
         return redirect()->back()->with('error', 'Error al subir el documento.');
@@ -82,68 +63,26 @@ class PlanillasController extends BaseController
 
     public function edit_planilla_post($id)
     {
-        try {
-            $planilla = $this->planillasModel->find($id);
-            if (!$planilla) {
-                return redirect()->back()->with('error', 'Planilla no encontrada.');
+        $file = $this->request->getFile('documento');
+        $planilla = $this->planillasModel->find($id);
+
+        if ($file && $file->isValid() && !$file->hasMoved()) {
+            $newName = $file->getRandomName();
+            $file->move(FCPATH . 'planillas', $newName);
+            if ($planilla['documento']) {
+                unlink(FCPATH . 'planillas/' . $planilla['documento']);
             }
-
-            $file = $this->request->getFile('documento');
-            $oldFile = null;
-            $newName = null;
-
-            if ($file && $file->isValid() && !$file->hasMoved()) {
-                // Validar tipo de archivo
-                $validTypes = ['application/pdf'];
-                if (!in_array($file->getMimeType(), $validTypes)) {
-                    return redirect()->back()->with('error', 'Solo se permiten archivos PDF.');
-                }
-
-                $newName = $file->getRandomName();
-                
-                // Guardar referencia al archivo antiguo
-                if ($planilla['documento']) {
-                    $oldFile = FCPATH . 'planillas/' . $planilla['documento'];
-                }
-
-                // Mover el nuevo archivo
-                if (!$file->move(FCPATH . 'planillas', $newName)) {
-                    throw new \Exception('Error al mover el nuevo archivo.');
-                }
-            }
-
-            // Actualizar datos
-            $planilla['year'] = $this->request->getPost('year');
-            $planilla['month'] = $this->request->getPost('month');
-            $planilla['planilla'] = $this->request->getPost('planilla');
-            $planilla['observaciones'] = $this->request->getPost('observaciones');
-            
-            if ($newName) {
-                $planilla['documento'] = $newName;
-            }
-
-            // Intentar guardar en la base de datos
-            if (!$this->planillasModel->save($planilla)) {
-                // Si falla el guardado y habíamos subido un nuevo archivo, eliminarlo
-                if ($newName && file_exists(FCPATH . 'planillas/' . $newName)) {
-                    unlink(FCPATH . 'planillas/' . $newName);
-                }
-                throw new \Exception('Error al guardar los datos en la base de datos.');
-            }
-
-            // Solo después de confirmar que todo está bien, eliminar el archivo antiguo
-            if ($oldFile && file_exists($oldFile)) {
-                unlink($oldFile);
-            }
-
-            return redirect()->to('/planillas/list-planillas')->with('success', 'Planilla actualizada exitosamente.');
-        } catch (\Exception $e) {
-            // Asegurarse de limpiar cualquier archivo nuevo si ocurre un error
-            if ($newName && file_exists(FCPATH . 'planillas/' . $newName)) {
-                unlink(FCPATH . 'planillas/' . $newName);
-            }
-            return redirect()->back()->with('error', 'Error al actualizar la planilla: ' . $e->getMessage());
+            $planilla['documento'] = $newName;
         }
+
+        $planilla['year'] = $this->request->getPost('year');
+        $planilla['month'] = $this->request->getPost('month');
+        $planilla['planilla'] = $this->request->getPost('planilla');
+        $planilla['observaciones'] = $this->request->getPost('observaciones');
+
+        $this->planillasModel->save($planilla);
+
+        return redirect()->to('/planillas/list-planillas')->with('success', 'Planilla actualizada exitosamente.');
     }
 
     public function delete_planilla($id)
@@ -153,28 +92,13 @@ class PlanillasController extends BaseController
             return redirect()->to(base_url('planillas/list-planillas'))->with('error', 'No tiene permisos para esta acción');
         }
 
-        try {
-            $planilla = $this->planillasModel->find($id);
-            if (!$planilla) {
-                return redirect()->back()->with('error', 'Planilla no encontrada.');
-            }
-
-            // Primero intentar eliminar de la base de datos
-            if (!$this->planillasModel->delete($id)) {
-                throw new \Exception('Error al eliminar el registro de la base de datos.');
-            }
-
-            // Solo después de confirmar la eliminación en la base de datos, eliminar el archivo
-            if ($planilla['documento'] && file_exists(FCPATH . 'planillas/' . $planilla['documento'])) {
-                if (!unlink(FCPATH . 'planillas/' . $planilla['documento'])) {
-                    // Loguear este error pero no revertir la operación
-                    log_message('error', 'No se pudo eliminar el archivo: ' . $planilla['documento']);
-                }
-            }
-
-            return redirect()->to('/planillas/list-planillas')->with('success', 'Planilla eliminada exitosamente.');
-        } catch (\Exception $e) {
-            return redirect()->back()->with('error', 'Error al eliminar la planilla: ' . $e->getMessage());
+        $planilla = $this->planillasModel->find($id);
+        if ($planilla && $planilla['documento']) {
+            unlink(FCPATH . 'planillas/' . $planilla['documento']);
         }
+
+        $this->planillasModel->delete($id);
+
+        return redirect()->to('/planillas/list-planillas')->with('success', 'Planilla eliminada exitosamente.');
     }
 }
