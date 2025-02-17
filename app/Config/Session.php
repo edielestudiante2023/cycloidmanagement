@@ -8,37 +8,120 @@ use CodeIgniter\Session\Handlers\FileHandler;
 
 class Session extends BaseConfig
 {
+    /**
+     * --------------------------------------------------------------------------
+     * Session Driver
+     * --------------------------------------------------------------------------
+     *
+     * The session storage driver to use:
+     * - `CodeIgniter\Session\Handlers\FileHandler`
+     * - `CodeIgniter\Session\Handlers\DatabaseHandler`
+     * - `CodeIgniter\Session\Handlers\MemcachedHandler`
+     * - `CodeIgniter\Session\Handlers\RedisHandler`
+     *
+     * @var class-string<BaseHandler>
+     */
     public string $driver = FileHandler::class;
 
+    /**
+     * --------------------------------------------------------------------------
+     * Session Cookie Name
+     * --------------------------------------------------------------------------
+     *
+     * The session cookie name, must contain only [0-9a-z_-] characters
+     */
     public string $cookieName = 'ci_session';
 
-    // Reducir a 30 minutos para mayor seguridad
-    public int $expiration = 1800;
+    /**
+     * --------------------------------------------------------------------------
+     * Session Expiration
+     * --------------------------------------------------------------------------
+     *
+     * The number of SECONDS you want the session to last.
+     * Setting to 0 (zero) means expire when the browser is closed.
+     */
+    public int $expiration = 7200;
 
+    /**
+     * --------------------------------------------------------------------------
+     * Session Save Path
+     * --------------------------------------------------------------------------
+     *
+     * The location to save sessions to and is driver dependent.
+     *
+     * For the 'files' driver, it's a path to a writable directory.
+     * WARNING: Only absolute paths are supported!
+     *
+     * For the 'database' driver, it's a table name.
+     * Please read up the manual for the format with other session drivers.
+     *
+     * IMPORTANT: You are REQUIRED to set a valid save path!
+     */
     public string $savePath = WRITEPATH . 'session';
 
-    // Habilitar verificación de IP para mayor seguridad
-    public bool $matchIP = true;
+    /**
+     * --------------------------------------------------------------------------
+     * Session Match IP
+     * --------------------------------------------------------------------------
+     *
+     * Whether to match the user's IP address when reading the session data.
+     *
+     * WARNING: If you're using the database driver, don't forget to update
+     *          your session table's PRIMARY KEY when changing this setting.
+     */
+    public bool $matchIP = false;
 
-    // Reducir tiempo de regeneración de ID para mayor seguridad
-    public int $timeToUpdate = 180;
+    /**
+     * --------------------------------------------------------------------------
+     * Session Time to Update
+     * --------------------------------------------------------------------------
+     *
+     * How many seconds between CI regenerating the session ID.
+     */
+    public int $timeToUpdate = 300;
 
-    // Destruir datos antiguos al regenerar ID
-    public bool $regenerateDestroy = true;
+    /**
+     * --------------------------------------------------------------------------
+     * Session Regenerate Destroy
+     * --------------------------------------------------------------------------
+     *
+     * Whether to destroy session data associated with the old session ID
+     * when auto-regenerating the session ID. When set to FALSE, the data
+     * will be later deleted by the garbage collector.
+     */
+    public bool $regenerateDestroy = false;
 
+    /**
+     * --------------------------------------------------------------------------
+     * Session Database Group
+     * --------------------------------------------------------------------------
+     *
+     * DB Group for the database session.
+     */
     public ?string $DBGroup = null;
 
-    // Configuraciones de seguridad adicionales
-    public array $cookieParams = [
-        'lifetime' => 1800,
-        'path'     => '/',
-        'domain'   => '',
-        'secure'   => true,     // Solo HTTPS
-        'httponly' => true,     // Prevenir acceso JavaScript
-        'samesite' => 'Strict'  // Protección CSRF
-    ];
-
+    /**
+     * --------------------------------------------------------------------------
+     * Lock Retry Interval (microseconds)
+     * --------------------------------------------------------------------------
+     *
+     * This is used for RedisHandler.
+     *
+     * Time (microseconds) to wait if lock cannot be acquired.
+     * The default is 100,000 microseconds (= 0.1 seconds).
+     */
     public int $lockRetryInterval = 100_000;
 
+    /**
+     * --------------------------------------------------------------------------
+     * Lock Max Retries
+     * --------------------------------------------------------------------------
+     *
+     * This is used for RedisHandler.
+     *
+     * Maximum number of lock acquisition attempts.
+     * The default is 300 times. That is lock timeout is about 30 (0.1 * 300)
+     * seconds.
+     */
     public int $lockMaxRetries = 300;
 }
