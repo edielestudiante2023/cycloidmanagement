@@ -31,7 +31,6 @@
       height: 50px;
       transition: background-color 0.3s;
     }
-
     table.dataTable tbody tr:hover {
       background-color: #e9ecef;
     }
@@ -72,7 +71,6 @@
       background-color: #6c757d;
       border-color: #6c757d;
     }
-
     .btn-secondary:hover {
       background-color: #5a6268;
       border-color: #545b62;
@@ -84,6 +82,7 @@
     }
   </style>
 </head>
+
 <body>
   <div class="container-fluid mt-5">
     <h1 class="mb-4">Seguimiento de Actividades</h1>
@@ -98,26 +97,25 @@
     <table id="evaluacionesTable" class="table table-striped table-bordered">
       <thead class="table-dark">
         <tr>
-          <!-- Columna para control de expansión -->
+          <!-- Columna para control de expansión (index 0) -->
           <th></th>
           <th>ID</th>
           <th>Nombre de la Actividad</th>
           <th>Tipo de Actividad</th>
           <th>Responsable</th>
-          <!-- Enlaces Adjuntos se coloca inmediatamente después de Responsable -->
           <th>Enlaces Adjuntos</th>
           <th>Estado</th>
           <th>Fecha Apertura</th>
           <th>Fecha Vencimiento</th>
           <th>Avance (%)</th>
           <th>Comentarios</th>
-          <!-- Documentos Adjuntos se deja al final y se ocultará en la vista -->
+          <!-- Documentos Adjuntos (se ocultará con DataTables, index 11) -->
           <th>Documentos Adjuntos</th>
         </tr>
       </thead>
       <tfoot>
         <tr>
-          <!-- Sin filtro en la columna de control -->
+          <!-- Sin filtro en la columna de control (index 0) -->
           <th></th>
           <th>
             <select class="form-select form-select-sm">
@@ -139,7 +137,6 @@
               <option value=""></option>
             </select>
           </th>
-          <!-- Filtro para Enlaces Adjuntos -->
           <th>
             <select class="form-select form-select-sm">
               <option value=""></option>
@@ -170,12 +167,9 @@
               <option value=""></option>
             </select>
           </th>
-          <!-- Filtro para Documentos Adjuntos (también oculto en la vista, pero se mantiene en el DOM) -->
-          <th>
-            <select class="form-select form-select-sm">
-              <option value=""></option>
-            </select>
-          </th>
+          <!-- Columna de Documentos Adjuntos (index 11). 
+               Se deja la <th> pero sin <select> -->
+          <th></th>
         </tr>
       </tfoot>
       <tbody>
@@ -196,7 +190,7 @@
                 <?= esc($actividad['responsable']) ?>
               </a>
             </td>
-            <!-- Enlaces Adjuntos (movido aquí) -->
+            <!-- Enlaces Adjuntos -->
             <td>
               <?php if (!empty($actividad['enlaces_adjuntos'])): ?>
                 <a href="<?= esc($actividad['enlaces_adjuntos']) ?>"
@@ -207,6 +201,7 @@
                 <span class="text-muted">No disponible</span>
               <?php endif; ?>
             </td>
+            <!-- Estado -->
             <td>
               <a href="#" class="editable"
                  data-type="select"
@@ -218,7 +213,7 @@
                 <?= esc($actividad['estado']) ?>
               </a>
             </td>
-            <!-- Columna Fecha Apertura con data-order -->
+            <!-- Fecha Apertura (data-order para ordenar correctamente) -->
             <td data-order="<?= esc($actividad['fecha_apertura']) ?>">
               <a href="#" class="editable"
                  data-type="flatpickr"
@@ -229,7 +224,7 @@
                 <?= esc($actividad['fecha_apertura']) ?>
               </a>
             </td>
-            <!-- Columna Fecha Vencimiento con data-order -->
+            <!-- Fecha Vencimiento (data-order para ordenar correctamente) -->
             <td data-order="<?= esc($actividad['fecha_vencimiento']) ?>">
               <a href="#" class="editable"
                  data-type="flatpickr"
@@ -240,7 +235,7 @@
                 <?= esc($actividad['fecha_vencimiento']) ?>
               </a>
             </td>
-            <!-- Columna Avance (%) con data-order -->
+            <!-- Avance (%) -->
             <td data-order="<?= esc($actividad['avance']) ?>">
               <a href="#" class="editable"
                  data-type="number"
@@ -253,6 +248,7 @@
                 <?= esc($actividad['avance']) ?>
               </a>%
             </td>
+            <!-- Comentarios -->
             <td>
               <a href="#" class="editable"
                  data-type="textarea"
@@ -263,7 +259,7 @@
                 <?= esc($actividad['comentarios']) ?>
               </a>
             </td>
-            <!-- Documentos Adjuntos (oculto en la vista, pero mantenido en el DOM) -->
+            <!-- Documentos Adjuntos (oculto con DataTables) -->
             <td>
               <?php if (!empty($actividad['documentos_adjuntos'])): ?>
                 <a href="<?= base_url('uploads/actividades/' . esc($actividad['documentos_adjuntos'])) ?>"
@@ -301,7 +297,6 @@
   <!-- Extensión personalizada de X-Editable para Flatpickr con botón "Hoy" -->
   <script>
     (function($) {
-      // Definición del nuevo input type "flatpickr" para X-Editable
       var FlatpickrInput = function(options) {
         this.init('flatpickr', options, FlatpickrInput.defaults);
       };
@@ -311,13 +306,12 @@
       $.extend(FlatpickrInput.prototype, {
         render: function() {
           var that = this;
-          // Inicializa Flatpickr sobre el input con configuración común
           this.fp = flatpickr(this.$input[0], {
             dateFormat: "Y-m-d",
             locale: "es",
             defaultDate: this.$input.val() || null,
             onReady: function(selectedDates, dateStr, instance) {
-              // Crear botón "Hoy" y agregarlo al contenedor del calendario
+              // Botón "Hoy"
               var fpContainer = instance.calendarContainer;
               var todayButton = document.createElement("button");
               todayButton.type = "button";
@@ -372,58 +366,73 @@
   </script>
 
   <script>
-    // Función que retorna el HTML con los detalles de la fila
-    // Se ha ajustado el orden de las columnas para que coincida con la nueva disposición
-    function format(d) {
-      // d es un array con los datos de la fila. El índice 0 es la columna de control.
-      return '<div class="child-details" style="overflow:auto;">' +
-        '<table cellpadding="5" cellspacing="0" border="0" style="width:100%;">' +
-          '<tr>' +
-            '<td style="width:30%;"><strong>ID</strong></td>' +
-            '<td style="width:70%;">' + d[1] + '</td>' +
-          '</tr>' +
-          '<tr>' +
-            '<td style="width:30%;"><strong>Nombre de la Actividad</strong></td>' +
-            '<td style="width:70%;">' + d[2] + '</td>' +
-          '</tr>' +
-          '<tr>' +
-            '<td style="width:30%;"><strong>Tipo de Actividad</strong></td>' +
-            '<td style="width:70%;">' + d[3] + '</td>' +
-          '</tr>' +
-          '<tr>' +
-            '<td style="width:30%;"><strong>Responsable</strong></td>' +
-            '<td style="width:70%;">' + d[4] + '</td>' +
-          '</tr>' +
-          '<tr>' +
-            '<td style="width:30%;"><strong>Enlaces Adjuntos</strong></td>' +
-            '<td style="width:70%;">' + d[5] + '</td>' +
-          '</tr>' +
-          '<tr>' +
-            '<td style="width:30%;"><strong>Estado</strong></td>' +
-            '<td style="width:70%;">' + d[6] + '</td>' +
-          '</tr>' +
-          '<tr>' +
-            '<td style="width:30%;"><strong>Fecha Apertura</strong></td>' +
-            '<td style="width:70%;">' + d[7] + '</td>' +
-          '</tr>' +
-          '<tr>' +
-            '<td style="width:30%;"><strong>Fecha Vencimiento</strong></td>' +
-            '<td style="width:70%;">' + d[8] + '</td>' +
-          '</tr>' +
-          '<tr>' +
-            '<td style="width:30%;"><strong>Avance (%)</strong></td>' +
-            '<td style="width:70%;">' + d[9] + '</td>' +
-          '</tr>' +
-          '<tr>' +
-            '<td style="width:30%;"><strong>Comentarios</strong></td>' +
-            '<td style="width:70%;">' + d[10] + '</td>' +
-          '</tr>' +
-          '<tr>' +
-            '<td style="width:30%;"><strong>Documentos Adjuntos</strong></td>' +
-            '<td style="width:70%;">' + d[11] + '</td>' +
-          '</tr>' +
-        '</table>' +
-      '</div>';
+    // En lugar de usar row.data() en crudo, tomamos el HTML de cada celda
+    function format(row) {
+      var $rowCells = $(row.node()).children('td');
+
+      // Extraemos el contenido HTML que ya ve el usuario
+      var colID           = $rowCells.eq(1).html();
+      var colNombre       = $rowCells.eq(2).html();
+      var colTipo         = $rowCells.eq(3).html();
+      var colResponsable  = $rowCells.eq(4).html();
+      var colEnlaces      = $rowCells.eq(5).html();
+      var colEstado       = $rowCells.eq(6).html();
+      var colFApertura    = $rowCells.eq(7).html();
+      var colFVencimiento = $rowCells.eq(8).html();
+      var colAvance       = $rowCells.eq(9).html();
+      var colComentarios  = $rowCells.eq(10).html();
+      var colDocumentos   = $rowCells.eq(11).html();  // Oculto en la tabla, pero lo mostramos aquí
+
+      return `
+        <div class="child-details" style="overflow:auto;">
+          <table cellpadding="5" cellspacing="0" border="0" style="width:100%;">
+            <tr>
+              <td style="width:30%;"><strong>ID</strong></td>
+              <td style="width:70%;">${colID}</td>
+            </tr>
+            <tr>
+              <td style="width:30%;"><strong>Nombre de la Actividad</strong></td>
+              <td style="width:70%;">${colNombre}</td>
+            </tr>
+            <tr>
+              <td style="width:30%;"><strong>Tipo de Actividad</strong></td>
+              <td style="width:70%;">${colTipo}</td>
+            </tr>
+            <tr>
+              <td style="width:30%;"><strong>Responsable</strong></td>
+              <td style="width:70%;">${colResponsable}</td>
+            </tr>
+            <tr>
+              <td style="width:30%;"><strong>Enlaces Adjuntos</strong></td>
+              <td style="width:70%;">${colEnlaces}</td>
+            </tr>
+            <tr>
+              <td style="width:30%;"><strong>Estado</strong></td>
+              <td style="width:70%;">${colEstado}</td>
+            </tr>
+            <tr>
+              <td style="width:30%;"><strong>Fecha Apertura</strong></td>
+              <td style="width:70%;">${colFApertura}</td>
+            </tr>
+            <tr>
+              <td style="width:30%;"><strong>Fecha Vencimiento</strong></td>
+              <td style="width:70%;">${colFVencimiento}</td>
+            </tr>
+            <tr>
+              <td style="width:30%;"><strong>Avance (%)</strong></td>
+              <td style="width:70%;">${colAvance}</td>
+            </tr>
+            <tr>
+              <td style="width:30%;"><strong>Comentarios</strong></td>
+              <td style="width:70%;">${colComentarios}</td>
+            </tr>
+            <tr>
+              <td style="width:30%;"><strong>Documentos Adjuntos</strong></td>
+              <td style="width:70%;">${colDocumentos}</td>
+            </tr>
+          </table>
+        </div>
+      `;
     }
 
     $(document).ready(function() {
@@ -439,14 +448,13 @@
             return response.msg;
           }
         },
-        error: function(response, newValue) {
+        error: function() {
           return 'Error al actualizar el campo. Por favor, intente nuevamente.';
         }
       };
-
       $.extend($.fn.editable.defaults, editableDefaults);
 
-      // Inicializar campos de diferentes tipos
+      // Inicializar los campos x-editable
       $('.editable[data-type="text"]').editable();
       $('.editable[data-type="select"]').editable();
       $('.editable[data-type="number"]').editable({
@@ -457,8 +465,6 @@
         }
       });
       $('.editable[data-type="textarea"]').editable();
-
-      // Inicializar campos de fecha con Flatpickr
       $('.editable[data-type="flatpickr"]').editable({
         format: 'Y-m-d',
         display: function(value) {
@@ -466,7 +472,6 @@
             $(this).empty();
             return;
           }
-          // Formatear la fecha a "d/m/Y" para mostrarla al usuario
           var fpDate = flatpickr.parseDate(value, "Y-m-d");
           var formatted = fpDate ? flatpickr.formatDate(fpDate, "d/m/Y") : value;
           $(this).text(formatted);
@@ -477,9 +482,10 @@
       var table = $('#evaluacionesTable').DataTable({
         stateSave: true,
         responsive: true,
-        dom: "<'row'<'col-sm-12 col-md-6'B>>" +
-             "<'row'<'col-sm-12'tr>>" +
-             "<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>",
+        dom:
+          "<'row'<'col-sm-12 col-md-6'B>>" +
+          "<'row'<'col-sm-12'tr>>" +
+          "<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>",
         buttons: [
           {
             extend: 'colvis',
@@ -490,9 +496,9 @@
             text: 'Exportar a Excel'
           }
         ],
-        // Ocultamos la columna 11 (Documentos) de la vista
         columnDefs: [
           {
+            // Columna para expandir fila
             targets: 0,
             orderable: false,
             className: 'details-control',
@@ -500,23 +506,23 @@
             defaultContent: '<i class="bi bi-plus-circle-fill"></i>'
           },
           {
-            targets: 11, // Documentos Adjuntos
+            // Ocultamos Documentos Adjuntos (index 11)
+            targets: 11,
             visible: false
           }
         ],
-        order: [[1, 'asc']], // Ordenar por la columna ID
+        order: [[1, 'asc']], // Ordenar por ID (index 1)
         initComplete: function() {
           this.api().columns().every(function() {
             var column = this;
-            // Evitamos agregar filtro a la columna de control (índice 0)
-            if (column.index() === 0) return;
+            // Omitir la columna de expansión (0) y la oculta (11)
+            if (column.index() === 0 || column.index() === 11) return;
             var select = $('select', column.footer());
             if (select.length) {
               var uniqueData = [];
-              // Extraer el texto limpio de cada celda
               column.nodes().to$().each(function() {
                 var cellText = $(this).text().trim();
-                if (cellText !== "" && $.inArray(cellText, uniqueData) === -1) {
+                if (cellText && $.inArray(cellText, uniqueData) === -1) {
                   uniqueData.push(cellText);
                 }
               });
@@ -531,6 +537,7 @@
           });
         },
         drawCallback: function() {
+          // Inicializar tooltips de Bootstrap
           var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
           tooltipTriggerList.map(function(tooltipTriggerEl) {
             return new bootstrap.Tooltip(tooltipTriggerEl);
@@ -538,22 +545,22 @@
         }
       });
 
-      // Evento para la expansión/contracción de la fila
+      // Control para expandir/ocultar fila hija
       $('#evaluacionesTable tbody').on('click', 'td.details-control', function() {
         var tr = $(this).closest('tr');
         var row = table.row(tr);
         if (row.child.isShown()) {
-          // La fila ya está abierta: la cerramos
+          // Si ya está abierta, la cerramos
           row.child.hide();
           tr.removeClass('shown');
         } else {
-          // Abrir la fila con la información extra
-          row.child(format(row.data())).show();
+          // Expandir y mostrar detalles
+          row.child(format(row)).show();
           tr.addClass('shown');
         }
       });
 
-      // Botón para limpiar filtros guardados en el stateSave
+      // Botón para limpiar filtros (stateSave)
       $('#clearState').on('click', function() {
         localStorage.removeItem('DataTables_evaluacionesTable_/');
         table.state.clear();
