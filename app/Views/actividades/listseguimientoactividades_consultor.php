@@ -175,7 +175,6 @@
       <tbody>
         <?php foreach ($actividades as $actividad): ?>
           <tr>
-            <!-- Celda para el botón de expansión (vacía) -->
             <td></td>
             <td><?= esc($actividad['id_actividad']) ?></td>
             <td><?= esc($actividad['nombre_actividad']) ?></td>
@@ -190,7 +189,6 @@
                 <?= esc($actividad['responsable']) ?>
               </a>
             </td>
-            <!-- Enlaces Adjuntos -->
             <td>
               <?php if (!empty($actividad['enlaces_adjuntos'])): ?>
                 <a href="<?= esc($actividad['enlaces_adjuntos']) ?>"
@@ -201,7 +199,6 @@
                 <span class="text-muted">No disponible</span>
               <?php endif; ?>
             </td>
-            <!-- Estado -->
             <td>
               <a href="#" class="editable"
                  data-type="select"
@@ -213,7 +210,6 @@
                 <?= esc($actividad['estado']) ?>
               </a>
             </td>
-            <!-- Fecha Apertura (data-order para ordenar correctamente) -->
             <td data-order="<?= esc($actividad['fecha_apertura']) ?>">
               <a href="#" class="editable"
                  data-type="flatpickr"
@@ -224,7 +220,6 @@
                 <?= esc($actividad['fecha_apertura']) ?>
               </a>
             </td>
-            <!-- Fecha Vencimiento (data-order para ordenar correctamente) -->
             <td data-order="<?= esc($actividad['fecha_vencimiento']) ?>">
               <a href="#" class="editable"
                  data-type="flatpickr"
@@ -235,7 +230,6 @@
                 <?= esc($actividad['fecha_vencimiento']) ?>
               </a>
             </td>
-            <!-- Avance (%) -->
             <td data-order="<?= esc($actividad['avance']) ?>">
               <a href="#" class="editable"
                  data-type="number"
@@ -248,7 +242,6 @@
                 <?= esc($actividad['avance']) ?>
               </a>%
             </td>
-            <!-- Comentarios -->
             <td>
               <a href="#" class="editable"
                  data-type="textarea"
@@ -366,11 +359,11 @@
   </script>
 
   <script>
-    // En lugar de usar row.data() en crudo, tomamos el HTML de cada celda
+    // Expansión de la fila para mostrar detalles
     function format(row) {
       var $rowCells = $(row.node()).children('td');
 
-      // Extraemos el contenido HTML que ya ve el usuario
+      // Extraemos el HTML que se ve en cada celda
       var colID           = $rowCells.eq(1).html();
       var colNombre       = $rowCells.eq(2).html();
       var colTipo         = $rowCells.eq(3).html();
@@ -381,7 +374,7 @@
       var colFVencimiento = $rowCells.eq(8).html();
       var colAvance       = $rowCells.eq(9).html();
       var colComentarios  = $rowCells.eq(10).html();
-      var colDocumentos   = $rowCells.eq(11).html();  // Oculto en la tabla, pero lo mostramos aquí
+      var colDocumentos   = $rowCells.eq(11).html(); // oculto en la tabla, pero lo mostramos
 
       return `
         <div class="child-details" style="overflow:auto;">
@@ -443,7 +436,7 @@
           type: 'POST',
           dataType: 'json'
         },
-        success: function(response, newValue) {
+        success: function(response) {
           if (response && response.status === 'error') {
             return response.msg;
           }
@@ -454,7 +447,7 @@
       };
       $.extend($.fn.editable.defaults, editableDefaults);
 
-      // Inicializar los campos x-editable
+      // Inicializar x-editable
       $('.editable[data-type="text"]').editable();
       $('.editable[data-type="select"]').editable();
       $('.editable[data-type="number"]').editable({
@@ -517,10 +510,12 @@
             var column = this;
             // Omitir la columna de expansión (0) y la oculta (11)
             if (column.index() === 0 || column.index() === 11) return;
+
             var select = $('select', column.footer());
             if (select.length) {
               var uniqueData = [];
               column.nodes().to$().each(function() {
+                // Tomamos solo el texto (sin HTML)
                 var cellText = $(this).text().trim();
                 if (cellText && $.inArray(cellText, uniqueData) === -1) {
                   uniqueData.push(cellText);
@@ -529,9 +524,11 @@
               uniqueData.sort().forEach(function(d) {
                 select.append('<option value="' + d + '">' + d + '</option>');
               });
+              // Aquí cambiamos la búsqueda a un modo más flexible:
               select.on('change', function() {
-                var val = $.fn.dataTable.util.escapeRegex($(this).val());
-                column.search(val ? '^' + val + '$' : '', true, false).draw();
+                var val = $(this).val() || '';
+                // Búsqueda como subcadena (NO regex estricto)
+                column.search(val, false, false).draw();
               });
             }
           });
@@ -545,16 +542,14 @@
         }
       });
 
-      // Control para expandir/ocultar fila hija
+      // Control para expandir/ocultar la fila hija
       $('#evaluacionesTable tbody').on('click', 'td.details-control', function() {
         var tr = $(this).closest('tr');
         var row = table.row(tr);
         if (row.child.isShown()) {
-          // Si ya está abierta, la cerramos
           row.child.hide();
           tr.removeClass('shown');
         } else {
-          // Expandir y mostrar detalles
           row.child(format(row)).show();
           tr.addClass('shown');
         }
