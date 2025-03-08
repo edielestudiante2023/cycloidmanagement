@@ -3,14 +3,14 @@
 
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Listado de Actividades</title>
 
   <!-- Estilos de Bootstrap y DataTables -->
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
-  <link href="https://cdn.datatables.net/1.13.1/css/dataTables.bootstrap5.min.css" rel="stylesheet" />
-  <link href="https://cdn.datatables.net/buttons/2.3.3/css/buttons.bootstrap5.min.css" rel="stylesheet" />
-  <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.10.5/font/bootstrap-icons.min.css" rel="stylesheet" />
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"/>
+  <link href="https://cdn.datatables.net/1.13.1/css/dataTables.bootstrap5.min.css" rel="stylesheet"/>
+  <link href="https://cdn.datatables.net/buttons/2.3.3/css/buttons.bootstrap5.min.css" rel="stylesheet"/>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.10.5/font/bootstrap-icons.min.css" rel="stylesheet"/>
 
   <style>
     /* Modern color scheme */
@@ -28,11 +28,9 @@
       height: 50px;
       transition: background-color 0.3s;
     }
-
     table.dataTable tbody tr:hover {
       background-color: #e9ecef;
     }
-
     table.dataTable th,
     table.dataTable td {
       white-space: nowrap;
@@ -45,11 +43,15 @@
       border-radius: 50px;
       transition: background-color 0.2s, transform 0.2s, box-shadow 0.2s;
     }
-
     .btn-moderno:hover {
       background-color: #0056b3;
       transform: translateY(-2px);
       box-shadow: 0 4px 6px rgba(0, 0, 0, 0.15);
+    }
+
+    /* Estilo para la celda que sirve como "control" de expandir/colapsar */
+    td.dt-control {
+      cursor: pointer;
     }
   </style>
 </head>
@@ -70,7 +72,13 @@
     <table id="evaluacionesTable" class="table table-striped table-bordered">
       <thead class="table-dark">
         <tr>
+          <!-- 1) Primera columna: Acciones -->
           <th>Acciones</th>
+
+          <!-- 2) Segunda columna: ícono expandir/colapsar -->
+          <th></th>
+
+          <!-- 3) Las siguientes columnas ya existentes -->
           <th>ID</th>
           <th>Nombre de la Actividad</th>
           <th>Tipo de Actividad</th>
@@ -84,9 +92,11 @@
           <th>Enlaces Adjuntos</th>
         </tr>
       </thead>
+
       <tfoot>
         <tr>
-          <th></th> <!-- Sin filtro para la columna "Acciones" -->
+          <th></th> <!-- sin filtro para acciones -->
+          <th></th> <!-- sin filtro para el expand/collapse -->
           <th><select class="form-select form-select-sm"><option value=""></option></select></th>
           <th><select class="form-select form-select-sm"><option value=""></option></select></th>
           <th><select class="form-select form-select-sm"><option value=""></option></select></th>
@@ -100,18 +110,29 @@
           <th><select class="form-select form-select-sm"><option value=""></option></select></th>
         </tr>
       </tfoot>
+
       <tbody>
         <?php foreach ($actividades as $actividad): ?>
-          <tr>
+          <!-- En cada <tr> se almacena la info completa en un atributo data-actividad -->
+          <tr data-actividad='<?= json_encode($actividad) ?>'>
+            <!-- 1) Celda de Acciones -->
             <td>
-              <a href="<?= base_url('actividades/edit/' . esc($actividad['id_actividad'])) ?>" class="btn btn-warning btn-sm" data-bs-toggle="tooltip" title="Editar">
+              <a href="<?= base_url('actividades/edit/' . esc($actividad['id_actividad'])) ?>"
+                 class="btn btn-warning btn-sm" data-bs-toggle="tooltip" title="Editar">
                 Editar
               </a>
-              <a href="<?= base_url('actividades/delete/' . esc($actividad['id_actividad'])) ?>" class="btn btn-danger btn-sm"
-                onclick="return confirm('¿Estás seguro de eliminar esta actividad?');" data-bs-toggle="tooltip" title="Eliminar">
+              <a href="<?= base_url('actividades/delete/' . esc($actividad['id_actividad'])) ?>"
+                 class="btn btn-danger btn-sm"
+                 onclick="return confirm('¿Estás seguro de eliminar esta actividad?');"
+                 data-bs-toggle="tooltip" title="Eliminar">
                 Eliminar
               </a>
             </td>
+
+            <!-- 2) Celda vacía que servirá como 'dt-control' para expandir/colapsar -->
+            <td></td>
+
+            <!-- 3) Resto de campos visibles en la fila principal -->
             <td><?= esc($actividad['id_actividad']) ?></td>
             <td><?= esc($actividad['nombre_actividad']) ?></td>
             <td><?= esc($actividad['tipo_titulo']) ?></td>
@@ -124,7 +145,8 @@
             <td>
               <?php if (!empty($actividad['documentos_adjuntos'])): ?>
                 <a href="<?= base_url('uploads/actividades/' . esc($actividad['documentos_adjuntos'])) ?>"
-                   target="_blank" class="btn btn-light btn-sm" data-bs-toggle="tooltip" title="Ver documento">
+                   target="_blank"
+                   class="btn btn-light btn-sm" data-bs-toggle="tooltip" title="Ver documento">
                   <i class="bi bi-file-earmark-text"></i>
                 </a>
               <?php else: ?>
@@ -134,7 +156,8 @@
             <td>
               <?php if (!empty($actividad['enlaces_adjuntos'])): ?>
                 <a href="<?= esc($actividad['enlaces_adjuntos']) ?>"
-                   target="_blank" class="btn btn-light btn-sm" data-bs-toggle="tooltip" title="Ir al enlace">
+                   target="_blank"
+                   class="btn btn-light btn-sm" data-bs-toggle="tooltip" title="Ir al enlace">
                   <i class="bi bi-link-45deg"></i>
                 </a>
               <?php else: ?>
@@ -159,6 +182,40 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
 
   <script>
+    // Función para construir el contenido del "row child"
+    // Ajusta según los campos que quieras mostrar dentro.
+    function format(d) {
+      // d es el objeto completo de la actividad (JSON)
+      // Aquí construimos el HTML con un pequeño "sub-table" o como prefieras.
+      return `
+        <div style="overflow: auto;">
+          <table class="table">
+            <tr>
+              <td style="width:30%; font-weight: bold;">ID Actividad</td>
+              <td style="width:70%;">${d.id_actividad}</td>
+            </tr>
+            <tr>
+              <td style="width:30%; font-weight: bold;">Responsable</td>
+              <td style="width:70%;">${d.responsable ?? ''}</td>
+            </tr>
+            <tr>
+              <td style="width:30%; font-weight: bold;">Estado</td>
+              <td style="width:70%;">${d.estado ?? ''}</td>
+            </tr>
+            <tr>
+              <td style="width:30%; font-weight: bold;">Comentarios</td>
+              <td style="width:70%;">${d.comentarios ?? ''}</td>
+            </tr>
+            <tr>
+              <td style="width:30%; font-weight: bold;">Avance</td>
+              <td style="width:70%;">${d.avance ?? ''}%</td>
+            </tr>
+            <!-- Agrega más filas si quieres mostrar más campos -->
+          </table>
+        </div>
+      `;
+    }
+
     $(document).ready(function() {
       var table = $('#evaluacionesTable').DataTable({
         stateSave: true,
@@ -178,14 +235,26 @@
             className: '',
             exportOptions: {
               columns: ':visible:not(:first-child)' 
-              // Excluye la primera columna ("Acciones") de la exportación
+              // Excluye la primera columna ("Acciones") de la exportación,
+              // pero ojo: ahora la segunda es la del "expand/collapse". Ajusta si quieres.
             }
+          }
+        ],
+        // Para que la segunda columna (index = 1) sea la encargada de expandir/colapsar
+        columnDefs: [
+          {
+            className: 'dt-control',
+            orderable: false,
+            targets: 1  // la segunda columna (comienza en 0 la primera)
           }
         ],
         initComplete: function() {
           // Inicializar filtros desplegables en <tfoot> para cada columna
-          this.api().columns().every(function() {
+          this.api().columns().every(function(index) {
             var column = this;
+            // Saltarnos las dos primeras columnas (Acciones y expand/collapse)
+            if (index < 2) return;
+
             var select = $('select', column.footer());
             if (select.length) {
               column.data().unique().sort().each(function(d) {
@@ -208,6 +277,25 @@
         }
       });
 
+      // Evento para expandir/colapsar al hacer clic en la columna .dt-control
+      $('#evaluacionesTable tbody').on('click', 'td.dt-control', function() {
+        var tr = $(this).closest('tr');
+        var row = table.row(tr);
+
+        if (row.child.isShown()) {
+          // Si ya está abierto, se oculta
+          row.child.hide();
+          tr.removeClass('shown');
+        } else {
+          // Si está cerrado, se muestra
+          // Obtenemos el JSON del atributo data-actividad del <tr>
+          var dataActividad = tr.data('actividad');
+          row.child(format(dataActividad)).show();
+          tr.addClass('shown');
+        }
+      });
+
+      // Botón para limpiar el state
       $('#clearState').on('click', function() {
         localStorage.removeItem('DataTables_evaluacionesTable_/');
         table.state.clear();
@@ -216,5 +304,4 @@
     });
   </script>
 </body>
-
 </html>
