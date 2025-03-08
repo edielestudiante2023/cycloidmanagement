@@ -9,6 +9,7 @@
 <body>
 <div class="container mt-5">
     <h1>Lista de Videos de Capacitación Front Office</h1>
+    <a href="<?= base_url('videos-capacitaciones-front/add') ?>" class="btn btn-primary mb-3">Agregar Video</a>
     <table id="videosTable" class="table table-striped">
         <thead>
             <tr>
