@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
@@ -18,7 +17,6 @@
       background-color: #f8f9fa;
       color: #343a40;
     }
-
     h1 {
       color: #007bff;
     }
@@ -48,11 +46,6 @@
       transform: translateY(-2px);
       box-shadow: 0 4px 6px rgba(0, 0, 0, 0.15);
     }
-
-    /* Estilo para la celda que sirve como "control" de expandir/colapsar */
-    td.dt-control {
-      cursor: pointer;
-    }
   </style>
 </head>
 
@@ -65,39 +58,40 @@
     <?php endif; ?>
 
     <a href="<?= base_url('actividades/add') ?>" class="btn btn-primary mb-3">Agregar Actividad</a>
-
     <!-- Botón para restablecer filtros -->
     <button id="clearState" class="btn btn-secondary mb-3">Restablecer Filtros</button>
 
     <table id="evaluacionesTable" class="table table-striped table-bordered">
       <thead class="table-dark">
         <tr>
-          <!-- 1) Primera columna: Acciones -->
+          <!-- Columna 0) Acciones -->
           <th>Acciones</th>
-
-          <!-- 2) Segunda columna: ícono expandir/colapsar -->
-          <th></th>
-
-          <!-- 3) Las siguientes columnas ya existentes -->
+          <!-- Columna 1) ID -->
           <th>ID</th>
+          <!-- Columna 2) Nombre de la Actividad -->
           <th>Nombre de la Actividad</th>
+          <!-- Columna 3) Tipo de Actividad -->
           <th>Tipo de Actividad</th>
+          <!-- Columna 4) Responsable -->
           <th>Responsable</th>
-          <th>Estado</th>
-          <th>Fecha Apertura</th>
-          <th>Fecha Vencimiento</th>
-          <th>Avance (%)</th>
-          <th>Comentarios</th>
-          <th>Documentos Adjuntos</th>
+          <!-- NUEVA Columna 5) Enlaces Adjuntos (justo después de responsable) -->
           <th>Enlaces Adjuntos</th>
+          <!-- Columna 6) Estado -->
+          <th>Estado</th>
+          <!-- Columna 7) Fecha Apertura -->
+          <th>Fecha Apertura</th>
+          <!-- Columna 8) Fecha Vencimiento -->
+          <th>Fecha Vencimiento</th>
+          <!-- Columna 9) Avance (%) -->
+          <th>Avance (%)</th>
+          <!-- Columna 10) Comentarios -->
+          <th>Comentarios</th>
         </tr>
       </thead>
 
       <tfoot>
         <tr>
-          <th></th> <!-- sin filtro para acciones -->
-          <th></th> <!-- sin filtro para el expand/collapse -->
-          <th><select class="form-select form-select-sm"><option value=""></option></select></th>
+          <th></th> <!-- Sin filtro para Acciones -->
           <th><select class="form-select form-select-sm"><option value=""></option></select></th>
           <th><select class="form-select form-select-sm"><option value=""></option></select></th>
           <th><select class="form-select form-select-sm"><option value=""></option></select></th>
@@ -113,9 +107,8 @@
 
       <tbody>
         <?php foreach ($actividades as $actividad): ?>
-          <!-- En cada <tr> se almacena la info completa en un atributo data-actividad -->
-          <tr data-actividad='<?= json_encode($actividad) ?>'>
-            <!-- 1) Celda de Acciones -->
+          <tr>
+            <!-- 0) Acciones -->
             <td>
               <a href="<?= base_url('actividades/edit/' . esc($actividad['id_actividad'])) ?>"
                  class="btn btn-warning btn-sm" data-bs-toggle="tooltip" title="Editar">
@@ -128,31 +121,15 @@
                 Eliminar
               </a>
             </td>
-
-            <!-- 2) Celda vacía que servirá como 'dt-control' para expandir/colapsar -->
-            <td></td>
-
-            <!-- 3) Resto de campos visibles en la fila principal -->
+            <!-- 1) ID -->
             <td><?= esc($actividad['id_actividad']) ?></td>
+            <!-- 2) Nombre de la Actividad -->
             <td><?= esc($actividad['nombre_actividad']) ?></td>
+            <!-- 3) Tipo de Actividad -->
             <td><?= esc($actividad['tipo_titulo']) ?></td>
+            <!-- 4) Responsable -->
             <td><?= esc($actividad['responsable']) ?></td>
-            <td><?= esc($actividad['estado']) ?></td>
-            <td><?= esc($actividad['fecha_apertura']) ?></td>
-            <td><?= esc($actividad['fecha_vencimiento']) ?></td>
-            <td><?= esc($actividad['avance']) ?>%</td>
-            <td><?= esc($actividad['comentarios']) ?></td>
-            <td>
-              <?php if (!empty($actividad['documentos_adjuntos'])): ?>
-                <a href="<?= base_url('uploads/actividades/' . esc($actividad['documentos_adjuntos'])) ?>"
-                   target="_blank"
-                   class="btn btn-light btn-sm" data-bs-toggle="tooltip" title="Ver documento">
-                  <i class="bi bi-file-earmark-text"></i>
-                </a>
-              <?php else: ?>
-                <span class="text-muted">No disponible</span>
-              <?php endif; ?>
-            </td>
+            <!-- 5) Enlaces Adjuntos -->
             <td>
               <?php if (!empty($actividad['enlaces_adjuntos'])): ?>
                 <a href="<?= esc($actividad['enlaces_adjuntos']) ?>"
@@ -164,6 +141,16 @@
                 <span class="text-muted">No disponible</span>
               <?php endif; ?>
             </td>
+            <!-- 6) Estado -->
+            <td><?= esc($actividad['estado']) ?></td>
+            <!-- 7) Fecha Apertura -->
+            <td><?= esc($actividad['fecha_apertura']) ?></td>
+            <!-- 8) Fecha Vencimiento -->
+            <td><?= esc($actividad['fecha_vencimiento']) ?></td>
+            <!-- 9) Avance (%) -->
+            <td><?= esc($actividad['avance']) ?>%</td>
+            <!-- 10) Comentarios -->
+            <td><?= esc($actividad['comentarios']) ?></td>
           </tr>
         <?php endforeach; ?>
       </tbody>
@@ -182,41 +169,8 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
 
   <script>
-    // Función para construir el contenido del "row child"
-    // Ajusta según los campos que quieras mostrar dentro.
-    function format(d) {
-      // d es el objeto completo de la actividad (JSON)
-      // Aquí construimos el HTML con un pequeño "sub-table" o como prefieras.
-      return `
-        <div style="overflow: auto;">
-          <table class="table">
-            <tr>
-              <td style="width:30%; font-weight: bold;">ID Actividad</td>
-              <td style="width:70%;">${d.id_actividad}</td>
-            </tr>
-            <tr>
-              <td style="width:30%; font-weight: bold;">Responsable</td>
-              <td style="width:70%;">${d.responsable ?? ''}</td>
-            </tr>
-            <tr>
-              <td style="width:30%; font-weight: bold;">Estado</td>
-              <td style="width:70%;">${d.estado ?? ''}</td>
-            </tr>
-            <tr>
-              <td style="width:30%; font-weight: bold;">Comentarios</td>
-              <td style="width:70%;">${d.comentarios ?? ''}</td>
-            </tr>
-            <tr>
-              <td style="width:30%; font-weight: bold;">Avance</td>
-              <td style="width:70%;">${d.avance ?? ''}%</td>
-            </tr>
-            <!-- Agrega más filas si quieres mostrar más campos -->
-          </table>
-        </div>
-      `;
-    }
-
     $(document).ready(function() {
+      // Inicializamos DataTable
       var table = $('#evaluacionesTable').DataTable({
         stateSave: true,
         responsive: true,
@@ -226,35 +180,24 @@
         buttons: [
           {
             extend: 'colvis',
-            text: 'Columnas Visibles',
-            className: ''
+            text: 'Columnas Visibles'
           },
           {
             extend: 'excelHtml5',
             text: 'Exportar a Excel',
-            className: '',
             exportOptions: {
-              columns: ':visible:not(:first-child)' 
-              // Excluye la primera columna ("Acciones") de la exportación,
-              // pero ojo: ahora la segunda es la del "expand/collapse". Ajusta si quieres.
+              // Oculta la columna Acciones (índice 0)
+              columns: ':visible:not(:first-child)'
             }
-          }
-        ],
-        // Para que la segunda columna (index = 1) sea la encargada de expandir/colapsar
-        columnDefs: [
-          {
-            className: 'dt-control',
-            orderable: false,
-            targets: 1  // la segunda columna (comienza en 0 la primera)
           }
         ],
         initComplete: function() {
           // Inicializar filtros desplegables en <tfoot> para cada columna
           this.api().columns().every(function(index) {
-            var column = this;
-            // Saltarnos las dos primeras columnas (Acciones y expand/collapse)
-            if (index < 2) return;
+            // Saltar la primera columna ("Acciones", índice 0)
+            if (index === 0) return;
 
+            var column = this;
             var select = $('select', column.footer());
             if (select.length) {
               column.data().unique().sort().each(function(d) {
@@ -270,6 +213,7 @@
           });
         },
         drawCallback: function() {
+          // Inicializar tooltips en cada draw
           var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
           tooltipTriggerList.map(function(tooltipTriggerEl) {
             return new bootstrap.Tooltip(tooltipTriggerEl);
@@ -277,25 +221,7 @@
         }
       });
 
-      // Evento para expandir/colapsar al hacer clic en la columna .dt-control
-      $('#evaluacionesTable tbody').on('click', 'td.dt-control', function() {
-        var tr = $(this).closest('tr');
-        var row = table.row(tr);
-
-        if (row.child.isShown()) {
-          // Si ya está abierto, se oculta
-          row.child.hide();
-          tr.removeClass('shown');
-        } else {
-          // Si está cerrado, se muestra
-          // Obtenemos el JSON del atributo data-actividad del <tr>
-          var dataActividad = tr.data('actividad');
-          row.child(format(dataActividad)).show();
-          tr.addClass('shown');
-        }
-      });
-
-      // Botón para limpiar el state
+      // Botón para limpiar el state (filtros)
       $('#clearState').on('click', function() {
         localStorage.removeItem('DataTables_evaluacionesTable_/');
         table.state.clear();
