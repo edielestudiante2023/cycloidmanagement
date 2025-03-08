@@ -1,16 +1,15 @@
 <!DOCTYPE html>
 <html lang="es">
-
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Listado de Actividades</title>
 
   <!-- Estilos de Bootstrap y DataTables -->
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
-  <link href="https://cdn.datatables.net/1.13.1/css/dataTables.bootstrap5.min.css" rel="stylesheet" />
-  <link href="https://cdn.datatables.net/buttons/2.3.3/css/buttons.bootstrap5.min.css" rel="stylesheet" />
-  <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.10.5/font/bootstrap-icons.min.css" rel="stylesheet" />
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"/>
+  <link href="https://cdn.datatables.net/1.13.1/css/dataTables.bootstrap5.min.css" rel="stylesheet"/>
+  <link href="https://cdn.datatables.net/buttons/2.3.3/css/buttons.bootstrap5.min.css" rel="stylesheet"/>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.10.5/font/bootstrap-icons.min.css" rel="stylesheet"/>
   <!-- X-Editable CSS -->
   <link href="https://cdn.jsdelivr.net/npm/x-editable@1.5.1/dist/bootstrap-editable/css/bootstrap-editable.css" rel="stylesheet">
   <!-- Flatpickr CSS -->
@@ -85,7 +84,6 @@
     }
   </style>
 </head>
-
 <body>
   <div class="container-fluid mt-5">
     <h1 class="mb-4">Seguimiento de Actividades</h1>
@@ -106,13 +104,15 @@
           <th>Nombre de la Actividad</th>
           <th>Tipo de Actividad</th>
           <th>Responsable</th>
+          <!-- Enlaces Adjuntos se coloca inmediatamente después de Responsable -->
+          <th>Enlaces Adjuntos</th>
           <th>Estado</th>
           <th>Fecha Apertura</th>
           <th>Fecha Vencimiento</th>
           <th>Avance (%)</th>
           <th>Comentarios</th>
+          <!-- Documentos Adjuntos se deja al final y se ocultará en la vista -->
           <th>Documentos Adjuntos</th>
-          <th>Enlaces Adjuntos</th>
         </tr>
       </thead>
       <tfoot>
@@ -139,6 +139,7 @@
               <option value=""></option>
             </select>
           </th>
+          <!-- Filtro para Enlaces Adjuntos -->
           <th>
             <select class="form-select form-select-sm">
               <option value=""></option>
@@ -169,6 +170,7 @@
               <option value=""></option>
             </select>
           </th>
+          <!-- Filtro para Documentos Adjuntos (también oculto en la vista, pero se mantiene en el DOM) -->
           <th>
             <select class="form-select form-select-sm">
               <option value=""></option>
@@ -186,85 +188,87 @@
             <td><?= esc($actividad['tipo_titulo']) ?></td>
             <td>
               <a href="#" class="editable"
-                data-type="text"
-                data-pk="<?= esc($actividad['id_actividad']) ?>"
-                data-name="responsable"
-                data-url="<?= base_url('seguimientoactividades/updateField') ?>"
-                data-title="Editar Responsable">
+                 data-type="text"
+                 data-pk="<?= esc($actividad['id_actividad']) ?>"
+                 data-name="responsable"
+                 data-url="<?= base_url('seguimientoactividades/updateField') ?>"
+                 data-title="Editar Responsable">
                 <?= esc($actividad['responsable']) ?>
               </a>
             </td>
+            <!-- Enlaces Adjuntos (movido aquí) -->
             <td>
-              <a href="#" class="editable"
-                data-type="select"
-                data-pk="<?= esc($actividad['id_actividad']) ?>"
-                data-name="estado"
-                data-url="<?= base_url('seguimientoactividades/updateField') ?>"
-                data-title="Editar Estado"
-                data-source='[{"value": "abierto", "text": "Abierto"}, {"value": "gestionando", "text": "Gestionando"}, {"value": "cerrado", "text": "Cerrado"}]'>
-                <?= esc($actividad['estado']) ?>
-              </a>
-            </td>
-            <!-- Columna Fecha Apertura con data-order -->
-            <td data-order="<?= esc($actividad['fecha_apertura']) ?>">
-              <a href="#" class="editable"
-                data-type="flatpickr"
-                data-pk="<?= esc($actividad['id_actividad']) ?>"
-                data-name="fecha_apertura"
-                data-url="<?= base_url('seguimientoactividades/updateField') ?>"
-                data-title="Editar Fecha de Apertura">
-                <?= esc($actividad['fecha_apertura']) ?>
-              </a>
-            </td>
-            <!-- Columna Fecha Vencimiento con data-order -->
-            <td data-order="<?= esc($actividad['fecha_vencimiento']) ?>">
-              <a href="#" class="editable"
-                data-type="flatpickr"
-                data-pk="<?= esc($actividad['id_actividad']) ?>"
-                data-name="fecha_vencimiento"
-                data-url="<?= base_url('seguimientoactividades/updateField') ?>"
-                data-title="Editar Fecha de Vencimiento">
-                <?= esc($actividad['fecha_vencimiento']) ?>
-              </a>
-            </td>
-            <!-- Columna Avance (%) con data-order -->
-            <td data-order="<?= esc($actividad['avance']) ?>">
-              <a href="#" class="editable"
-                data-type="number"
-                data-pk="<?= esc($actividad['id_actividad']) ?>"
-                data-name="avance"
-                data-url="<?= base_url('seguimientoactividades/updateField') ?>"
-                data-title="Editar Avance"
-                data-min="0"
-                data-max="100">
-                <?= esc($actividad['avance']) ?>
-              </a>%
-            </td>
-            <td>
-              <a href="#" class="editable"
-                data-type="textarea"
-                data-pk="<?= esc($actividad['id_actividad']) ?>"
-                data-name="comentarios"
-                data-url="<?= base_url('seguimientoactividades/updateField') ?>"
-                data-title="Editar Comentarios">
-                <?= esc($actividad['comentarios']) ?>
-              </a>
-            </td>
-            <td>
-              <?php if (!empty($actividad['documentos_adjuntos'])): ?>
-                <a href="<?= base_url('uploads/actividades/' . esc($actividad['documentos_adjuntos'])) ?>"
-                  target="_blank" class="btn btn-light btn-sm" data-bs-toggle="tooltip" title="Ver documento">
-                  <i class="bi bi-file-earmark-text"></i>
+              <?php if (!empty($actividad['enlaces_adjuntos'])): ?>
+                <a href="<?= esc($actividad['enlaces_adjuntos']) ?>"
+                   target="_blank" class="btn btn-light btn-sm" data-bs-toggle="tooltip" title="Ir al enlace">
+                  <i class="bi bi-link-45deg"></i>
                 </a>
               <?php else: ?>
                 <span class="text-muted">No disponible</span>
               <?php endif; ?>
             </td>
             <td>
-              <?php if (!empty($actividad['enlaces_adjuntos'])): ?>
-                <a href="<?= esc($actividad['enlaces_adjuntos']) ?>"
-                  target="_blank" class="btn btn-light btn-sm" data-bs-toggle="tooltip" title="Ir al enlace">
-                  <i class="bi bi-link-45deg"></i>
+              <a href="#" class="editable"
+                 data-type="select"
+                 data-pk="<?= esc($actividad['id_actividad']) ?>"
+                 data-name="estado"
+                 data-url="<?= base_url('seguimientoactividades/updateField') ?>"
+                 data-title="Editar Estado"
+                 data-source='[{"value": "abierto", "text": "Abierto"}, {"value": "gestionando", "text": "Gestionando"}, {"value": "cerrado", "text": "Cerrado"}]'>
+                <?= esc($actividad['estado']) ?>
+              </a>
+            </td>
+            <!-- Columna Fecha Apertura con data-order -->
+            <td data-order="<?= esc($actividad['fecha_apertura']) ?>">
+              <a href="#" class="editable"
+                 data-type="flatpickr"
+                 data-pk="<?= esc($actividad['id_actividad']) ?>"
+                 data-name="fecha_apertura"
+                 data-url="<?= base_url('seguimientoactividades/updateField') ?>"
+                 data-title="Editar Fecha de Apertura">
+                <?= esc($actividad['fecha_apertura']) ?>
+              </a>
+            </td>
+            <!-- Columna Fecha Vencimiento con data-order -->
+            <td data-order="<?= esc($actividad['fecha_vencimiento']) ?>">
+              <a href="#" class="editable"
+                 data-type="flatpickr"
+                 data-pk="<?= esc($actividad['id_actividad']) ?>"
+                 data-name="fecha_vencimiento"
+                 data-url="<?= base_url('seguimientoactividades/updateField') ?>"
+                 data-title="Editar Fecha de Vencimiento">
+                <?= esc($actividad['fecha_vencimiento']) ?>
+              </a>
+            </td>
+            <!-- Columna Avance (%) con data-order -->
+            <td data-order="<?= esc($actividad['avance']) ?>">
+              <a href="#" class="editable"
+                 data-type="number"
+                 data-pk="<?= esc($actividad['id_actividad']) ?>"
+                 data-name="avance"
+                 data-url="<?= base_url('seguimientoactividades/updateField') ?>"
+                 data-title="Editar Avance"
+                 data-min="0"
+                 data-max="100">
+                <?= esc($actividad['avance']) ?>
+              </a>%
+            </td>
+            <td>
+              <a href="#" class="editable"
+                 data-type="textarea"
+                 data-pk="<?= esc($actividad['id_actividad']) ?>"
+                 data-name="comentarios"
+                 data-url="<?= base_url('seguimientoactividades/updateField') ?>"
+                 data-title="Editar Comentarios">
+                <?= esc($actividad['comentarios']) ?>
+              </a>
+            </td>
+            <!-- Documentos Adjuntos (oculto en la vista, pero mantenido en el DOM) -->
+            <td>
+              <?php if (!empty($actividad['documentos_adjuntos'])): ?>
+                <a href="<?= base_url('uploads/actividades/' . esc($actividad['documentos_adjuntos'])) ?>"
+                   target="_blank" class="btn btn-light btn-sm" data-bs-toggle="tooltip" title="Ver documento">
+                  <i class="bi bi-file-earmark-text"></i>
                 </a>
               <?php else: ?>
                 <span class="text-muted">No disponible</span>
@@ -368,10 +372,10 @@
   </script>
 
   <script>
-    // Función que retorna el HTML con los detalles de la fila (30% para el nombre, 70% para el valor)
+    // Función que retorna el HTML con los detalles de la fila
+    // Se ha ajustado el orden de las columnas para que coincida con la nueva disposición
     function format(d) {
-      // d es un array con los datos de la fila. Debido a que se agregó una columna extra al inicio,
-      // el índice 0 es la columna de control y los datos reales inician en el índice 1.
+      // d es un array con los datos de la fila. El índice 0 es la columna de control.
       return '<div class="child-details" style="overflow:auto;">' +
         '<table cellpadding="5" cellspacing="0" border="0" style="width:100%;">' +
           '<tr>' +
@@ -391,31 +395,31 @@
             '<td style="width:70%;">' + d[4] + '</td>' +
           '</tr>' +
           '<tr>' +
-            '<td style="width:30%;"><strong>Estado</strong></td>' +
+            '<td style="width:30%;"><strong>Enlaces Adjuntos</strong></td>' +
             '<td style="width:70%;">' + d[5] + '</td>' +
           '</tr>' +
           '<tr>' +
-            '<td style="width:30%;"><strong>Fecha Apertura</strong></td>' +
+            '<td style="width:30%;"><strong>Estado</strong></td>' +
             '<td style="width:70%;">' + d[6] + '</td>' +
           '</tr>' +
           '<tr>' +
-            '<td style="width:30%;"><strong>Fecha Vencimiento</strong></td>' +
+            '<td style="width:30%;"><strong>Fecha Apertura</strong></td>' +
             '<td style="width:70%;">' + d[7] + '</td>' +
           '</tr>' +
           '<tr>' +
-            '<td style="width:30%;"><strong>Avance (%)</strong></td>' +
+            '<td style="width:30%;"><strong>Fecha Vencimiento</strong></td>' +
             '<td style="width:70%;">' + d[8] + '</td>' +
           '</tr>' +
           '<tr>' +
-            '<td style="width:30%;"><strong>Comentarios</strong></td>' +
+            '<td style="width:30%;"><strong>Avance (%)</strong></td>' +
             '<td style="width:70%;">' + d[9] + '</td>' +
           '</tr>' +
           '<tr>' +
-            '<td style="width:30%;"><strong>Documentos Adjuntos</strong></td>' +
+            '<td style="width:30%;"><strong>Comentarios</strong></td>' +
             '<td style="width:70%;">' + d[10] + '</td>' +
           '</tr>' +
           '<tr>' +
-            '<td style="width:30%;"><strong>Enlaces Adjuntos</strong></td>' +
+            '<td style="width:30%;"><strong>Documentos Adjuntos</strong></td>' +
             '<td style="width:70%;">' + d[11] + '</td>' +
           '</tr>' +
         '</table>' +
@@ -454,7 +458,7 @@
       });
       $('.editable[data-type="textarea"]').editable();
 
-      // Inicializar campos de fecha con Flatpickr (para ambas columnas, apertura y vencimiento)
+      // Inicializar campos de fecha con Flatpickr
       $('.editable[data-type="flatpickr"]').editable({
         format: 'Y-m-d',
         display: function(value) {
@@ -469,14 +473,15 @@
         }
       });
 
-      // Inicializar DataTables con la columna de control para la fila expandible
+      // Inicializar DataTables
       var table = $('#evaluacionesTable').DataTable({
         stateSave: true,
         responsive: true,
         dom: "<'row'<'col-sm-12 col-md-6'B>>" +
              "<'row'<'col-sm-12'tr>>" +
              "<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>",
-        buttons: [{
+        buttons: [
+          {
             extend: 'colvis',
             text: 'Columnas Visibles'
           },
@@ -485,17 +490,21 @@
             text: 'Exportar a Excel'
           }
         ],
-        // Definimos la primera columna (índice 0) para el botón de expansión
-        columnDefs: [{
-          orderable: false,
-          className: 'details-control',
-          targets: 0,
-          data: null,
-          defaultContent: '<i class="bi bi-plus-circle-fill"></i>'
-
-        }],
-        // Como la columna de control es la 0, la ordenación inicial se hace por la columna 1 (ID)
-        order: [[1, 'asc']],
+        // Ocultamos la columna 11 (Documentos) de la vista
+        columnDefs: [
+          {
+            targets: 0,
+            orderable: false,
+            className: 'details-control',
+            data: null,
+            defaultContent: '<i class="bi bi-plus-circle-fill"></i>'
+          },
+          {
+            targets: 11, // Documentos Adjuntos
+            visible: false
+          }
+        ],
+        order: [[1, 'asc']], // Ordenar por la columna ID
         initComplete: function() {
           this.api().columns().every(function() {
             var column = this;
@@ -544,6 +553,7 @@
         }
       });
 
+      // Botón para limpiar filtros guardados en el stateSave
       $('#clearState').on('click', function() {
         localStorage.removeItem('DataTables_evaluacionesTable_/');
         table.state.clear();
@@ -551,7 +561,5 @@
       });
     });
   </script>
-
 </body>
-
 </html>
